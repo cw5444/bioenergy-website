@@ -1,26 +1,29 @@
-// components/ContactForm.tsx
 "use client";
 
 import { useState } from "react";
-import { getSupabase } from "@/lib/supabaseClient"; // 수정된 함수 가져오기
+import { supabase } from "@/lib/supabaseClient";
 
 export default function ContactForm() {
-  // ... 생략 (상태 관리 코드)
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
+    "idle"
+  );
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const supabase = getSupabase(); // 클릭했을 때만 실행됨!
+    setStatus("loading");
+    setErrorMsg("");
 
-    const { error } = await supabase
-      .from("inquiries")
-      .insert({ name: form.name, email: form.email, message: form.message });
-
-    // ... 생략
-  };
-
-  // ... 이하 동일
-}
-
+    const { error } = await supabase.from("inquiries").insert([
+      {
+        name: form.name,
+        email: form.email,
+        message: form.message,
       },
     ]);
 

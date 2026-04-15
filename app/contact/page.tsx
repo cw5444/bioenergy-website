@@ -1,23 +1,68 @@
 // app/contact/page.tsx
-"use client";                     // ← ★ 여기에 한 줄만 추가하면 됩니다.
+"use client";
 
-export const dynamic = "force-dynamic";   // 프리렌더링(SSG) 방지
+import { useState } from "react";
+import { supabase } from "@/lib/supabase";
 
-import ContactForm from "@/components/ContactForm";
+export default function Contact() {
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState<string | null>(null);
 
-export default function ContactPage() {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("전송 중…");
+    const { error } = await supabase.from("inquiries").insert([form]);
+    if (error) {
+      setStatus(`오류: ${error.message}`);
+    } else {
+      setStatus("전송 성공! 곧 답변드리겠습니다.");
+      setForm({ name: "", email: "", message: "" });
+    }
+  };
+
   return (
-    <section className="min-h-screen py-20 bg-slate-100">
-      <div className="max-w-3xl mx-auto text-center mb-10">
-        <h1 className="text-4xl font-bold text-green-800 mb-4">
-          문의하기
-        </h1>
-        <p className="text-lg text-slate-700">
-          프로젝트 협업·기술 상담·투자 문의는 아래 양식을 작성해 주세요.
-        </p>
-      </div>
-
-      <ContactForm />
+    <section className="max-w-xl mx-auto">
+      <h2 className="text-2xl font-bold mb-4">문의하기</h2>
+      {status && <p className="mb-4 text-center">{status}</p>}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <input
+          type="text"
+          name="name"
+          placeholder="성함"
+          value={form.name}
+          onChange={handleChange}
+          required
+          className="w-full border p-2 rounded"
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="이메일"
+          value={form.email}
+          onChange={handleChange}
+          required
+          className="w-full border p-2 rounded"
+        />
+        <textarea
+          name="message"
+          placeholder="문의 내용"
+          value={form.message}
+          onChange={handleChange}
+          rows={4}
+          required
+          className="w-full border p-2 rounded"
+        />
+        <button
+          type="submit"
+          className="w-full bg-bio-green text-white py-2 rounded hover:bg-bio-dark transition"
+        >
+          전송
+        </button>
+      </form>
     </section>
   );
 }

@@ -3,10 +3,6 @@
 
 export const dynamic = "force-dynamic";   // 프리렌더링(SSG) 방지
 
-export const metadata = {
-  title: "문의하기 – 바이오에너지연구소",
-};
-
 import ContactForm from "@/components/ContactForm";
 
 export default function ContactPage() {

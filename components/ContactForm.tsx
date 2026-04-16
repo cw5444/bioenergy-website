@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { getSupabase } from "@/lib/supabaseClient";
+import { getSupabase } from "@/lib/supabase";
 
 export default function ContactForm() {
   // 1. 필요한 상태(State) 정의

@@ -1,14 +1,37 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Home() {
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("sending");
+    
+    // Supabase 연동 로직 (이전 로직 유지)
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        setStatus("success");
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        setStatus("error");
+      }
+    } catch (err) {
+      setStatus("error");
+    }
+  };
+
   return (
     <main className="min-h-screen">
-      {/* 1. Hero Section: 이전의 선명한 그라데이션 복구 */}
-      <section 
-        id="intro" 
-        className="relative h-[90vh] flex items-center justify-center bg-slate-900 overflow-hidden scroll-mt-24"
-      >
-        {/* 요청하신 이전 느낌의 생동감 있는 오버레이 */}
+      {/* 1. Hero Section: 이전의 선명한 그린 그라데이션 복구 */}
+      <section id="intro" className="relative h-[90vh] flex items-center justify-center bg-slate-900 overflow-hidden scroll-mt-24">
         <div className="absolute inset-0 opacity-70 bg-gradient-to-br from-green-600 via-emerald-800 to-slate-950" />
         
         <div className="relative z-10 text-center px-4 max-w-5xl">
@@ -31,7 +54,6 @@ export default function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-5 justify-center">
-            {/* 404 방지를 위해 하단 contact 섹션으로 연결 */}
             <Link href="#contact" className="bg-green-600 hover:bg-green-500 text-white px-12 py-5 rounded-full text-xl font-bold transition-all shadow-[0_0_30px_rgba(34,197,94,0.4)]">
               지금 상담하기
             </Link>
@@ -42,7 +64,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. Tech Section: scroll-mt-24로 메뉴 클릭 시 잘림 방지 */}
+      {/* 2. Tech Section: scroll-mt-24 적용 */}
       <section id="tech" className="py-24 bg-white scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
@@ -66,16 +88,57 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. Contact Section: 임시 문의처 (404 방지용) */}
-      <section id="contact" className="py-24 bg-slate-900 text-white scroll-mt-24">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-8">BRC 연구소에 문의하기</h2>
-          <p className="text-slate-400 mb-10 text-lg">
-            기술 협업 및 연구 관련 문의는 아래 연락처로 주시기 바랍니다.
-          </p>
-          <div className="bg-white/5 p-8 rounded-2xl border border-white/10 inline-block">
-            <p className="text-xl">전남대학교 바이오에너지연구소 (BRC)</p>
-            <p className="text-green-400 mt-2">Email: contact@jnu-brc.ac.kr</p>
+      {/* 3. Contact Section: Supabase 연동 폼 복구 */}
+      <section id="contact" className="py-24 bg-slate-900 scroll-mt-24">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="bg-white rounded-[3rem] p-10 md:p-16 shadow-2xl">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-slate-900 mb-4">프로젝트 문의하기</h2>
+              <p className="text-slate-600 font-medium">실현 가능한 친환경 에너지를 함께 논의합니다.</p>
+            </div>
+            
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-2">성함/기관명</label>
+                  <input 
+                    type="text" 
+                    className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900" 
+                    placeholder="홍길동 / 전남대학교"
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-2">이메일 주소</label>
+                  <input 
+                    type="email" 
+                    className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900" 
+                    placeholder="example@jnu.ac.kr"
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    required
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-2">문의 내용</label>
+                <textarea 
+                  rows={5} 
+                  className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900" 
+                  placeholder="협업 제안이나 기술 문의 내용을 입력해 주세요."
+                  value={formData.message}
+                  onChange={(e) => setFormData({...formData, message: e.target.value})}
+                  required
+                />
+              </div>
+              <button className="w-full bg-green-600 hover:bg-green-700 text-white py-5 rounded-2xl text-xl font-bold transition-all shadow-lg shadow-green-600/20 active:scale-[0.98]">
+                {status === "sending" ? "전송 중..." : "전송하기"}
+              </button>
+              {status === "success" && <p className="text-center text-green-600 font-bold">성공적으로 발송되었습니다!</p>}
+              {status === "error" && <p className="text-center text-red-500 font-bold">오류가 발생했습니다. 다시 시도해 주세요.</p>}
+            </form>
           </div>
         </div>
       </section>

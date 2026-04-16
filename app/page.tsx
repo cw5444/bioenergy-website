@@ -1,37 +1,46 @@
+// app/page.tsx
 import Link from "next/link";
 
 export default function Home() {
   return (
     <div>
-      {/* 1. Hero Section: 그라데이션 핵심 */}
-      <section id="intro" className="relative h-[85vh] flex items-center justify-center bg-slate-900 overflow-hidden">
+      {/* 1. Hero Section: 글자 크기 및 신뢰성 문구 강화 */}
+      <section id="intro" className="relative h-[90vh] flex items-center justify-center bg-slate-900 overflow-hidden">
         {/* 그라데이션 오버레이 */}
-        <div className="absolute inset-0 opacity-50 bg-gradient-to-br from-green-500 via-emerald-700 to-slate-900" />
+        <div className="absolute inset-0 opacity-60 bg-gradient-to-br from-green-600 via-emerald-800 to-slate-950" />
         
-        <div className="relative z-10 text-center px-4 max-w-4xl">
-          <h2 className="text-green-400 font-bold mb-4 tracking-widest uppercase text-sm">Sustainable Energy Leader</h2>
-          <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-8 leading-[1.1]">
-            탄소중립의 해답, <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-emerald-500">
+        <div className="relative z-10 text-center px-4 max-w-5xl">
+          {/* 국립대 공신력 태그 */}
+          <div className="inline-block px-4 py-1.5 mb-6 border border-green-400/30 rounded-full bg-green-500/10 backdrop-blur-sm">
+            <span className="text-green-300 font-bold tracking-widest uppercase text-xs">
+              National University Research Institute
+            </span>
+          </div>
+          
+          <h1 className="text-6xl md:text-8xl font-black text-white mb-8 leading-[1.1] tracking-tight">
+            <span className="text-4xl md:text-5xl font-light opacity-90 block mb-2">탄소중립의 해답,</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-300 via-emerald-400 to-green-300">
               바이오에너지
-            </span>가 미래입니다
+            </span>
           </h1>
-          <p className="text-lg md:text-xl text-slate-300 mb-10 leading-relaxed font-light">
-            화석연료를 대체하고 지구 온난화를 멈출 수 있는 가장 현실적인 대안. <br className="hidden md:block" />
-            우리 연구소는 자연에서 얻은 에너지를 인류의 희망으로 바꿉니다.
+          
+          <p className="text-xl md:text-2xl text-slate-200 mb-12 leading-relaxed font-normal max-w-3xl mx-auto">
+            국립 전남대학교 <span className="font-bold text-white underline underline-offset-4 decoration-green-500">바이오에너지연구소(BRC)</span>는 <br className="hidden md:block" />
+            자연에서 얻은 에너지를 인류의 지속 가능한 미래로 바꿉니다.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/contact" className="bg-green-600 hover:bg-green-500 text-white px-10 py-4 rounded-full font-xl font-bold transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)]">
+
+          <div className="flex flex-col sm:flex-row gap-5 justify-center">
+            <Link href="/contact" className="bg-green-600 hover:bg-green-500 text-white px-12 py-5 rounded-full text-xl font-bold transition-all shadow-[0_0_30px_rgba(34,197,94,0.4)]">
               지금 상담하기
             </Link>
-            <Link href="#tech" className="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-md px-10 py-4 rounded-full font-xl font-bold transition-all">
+            <Link href="#tech" className="bg-white/10 hover:bg-white/20 text-white border border-white/30 backdrop-blur-md px-12 py-5 rounded-full text-xl font-bold transition-all">
               기술현황 보기
             </Link>
           </div>
         </div>
       </section>
 
-      {/* 2. Tech Section */}
+      {/* 2. Tech Section (변동 없음) */}
       <section id="tech" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">

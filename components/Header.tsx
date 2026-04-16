@@ -2,17 +2,24 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Header() {
   return (
     <header className="bg-bio-dark text-white py-4 sticky top-0 z-50 shadow-lg">
       <nav className="container mx-auto px-4 flex justify-between items-center">
-        {/* 로고 & 명칭 영역 */}
+        {/* ← 로고 & 명칭 영역 */}
         <Link href="/" className="flex items-center gap-3 group">
-          {/* 전남대학교 공식 로고 이미지 */}
-          ![JNU Logo](https://www.jnu.ac.kr/Common/Images/jnu_ui_symbol.png)
+          {/* public 폴더 안에 있는 이미지 → /images/jnu-logo.svg */}
+          <Image
+            src="/images/jnu-logo.svg"
+            alt="전남대학교 로고"
+            width={40}      // 필요에 따라 조정
+            height={40}
+            className="object-contain"
+          />
           <div className="flex flex-col">
-            <span className="text-2xl font-black tracking-tighter leading-none group-hover:text-bio-green transition-colors">
+            <span className="text-2xl font-black tracking-tighter group-hover:text-bio-green transition-colors">
               Celltebah
             </span>
             <span className="text-[10px] text-slate-400 font-medium uppercase tracking-wider">
@@ -21,7 +28,7 @@ export default function Header() {
           </div>
         </Link>
 
-        {/* 메뉴 영역 */}
+        {/* ← 메뉴 리스트 (기존 유지) */}
         <ul className="hidden md:flex space-x-8 font-medium">
           <li>
             <Link href="/about" className="hover:text-bio-green transition-colors">

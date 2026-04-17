@@ -32,7 +32,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-white">
       {/* ==================== 1️⃣ Hero ==================== */}
       <section
         id="intro"
@@ -132,7 +132,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ==================== 3️⃣ Research Status ==================== */}
+      {/* ==================== 3️⃣ Research Status (REFINED) ==================== */}
       <section id="status" className="py-24 bg-white scroll-mt-24">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
@@ -164,24 +164,30 @@ export default function Home() {
             ].map((item, idx) => (
               <div
                 key={idx}
-                className="group bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-100 hover:shadow-2xl transition-all"
+                className="group relative bg-slate-900 rounded-[2rem] overflow-hidden shadow-2xl transition-all duration-500 border border-slate-100"
               >
-                <div className="relative h-64 w-full">
+                {/* Image Area with Dark Overlay */}
+                <div className="relative h-[400px] w-full overflow-hidden">
                   <Image
                     src={item.img}
                     alt={item.title}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
                     unoptimized
                   />
-                </div>
-                <div className="p-8">
-                  <h4 className="text-2xl font-bold mb-4 text-slate-900">
-                    {item.title}
-                  </h4>
-                  <p className="text-slate-600 leading-relaxed font-medium">
-                    {item.desc}
-                  </p>
+                  {/* 사진의 촌스러움을 가려주는 딥 브라운/블랙 그라데이션 */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent opacity-90" />
+                  
+                  {/* Text Overlay (Bottom) */}
+                  <div className="absolute bottom-0 p-8 w-full transform transition-transform duration-500">
+                    <div className="mb-3 w-10 h-1 bg-green-500 rounded-full group-hover:w-20 transition-all duration-500" />
+                    <h4 className="text-2xl font-bold mb-3 text-white tracking-tight">
+                      {item.title}
+                    </h4>
+                    <p className="text-slate-300 leading-relaxed font-medium text-sm opacity-90">
+                      {item.desc}
+                    </p>
+                  </div>
                 </div>
               </div>
             ))}
@@ -274,4 +280,3 @@ export default function Home() {
     </main>
   );
 }
-

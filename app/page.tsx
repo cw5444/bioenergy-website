@@ -132,7 +132,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ==================== 3️⃣ Research Status (REFINED) ==================== */}
+      {/* ==================== 3️⃣ Research Status (사진 클릭 시 전체보기 적용) ==================== */}
       <section id="status" className="py-24 bg-white scroll-mt-24">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
@@ -166,29 +166,30 @@ export default function Home() {
                 key={idx}
                 className="group relative bg-slate-900 rounded-[2rem] overflow-hidden shadow-2xl transition-all duration-500 border border-slate-100"
               >
-                {/* Image Area with Dark Overlay */}
-                <div className="relative h-[400px] w-full overflow-hidden">
-                  <Image
-                    src={item.img}
-                    alt={item.title}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
-                    unoptimized
-                  />
-                  {/* 사진의 촌스러움을 가려주는 딥 브라운/블랙 그라데이션 */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent opacity-90" />
-                  
-                  {/* Text Overlay (Bottom) */}
-                  <div className="absolute bottom-0 p-8 w-full transform transition-transform duration-500">
-                    <div className="mb-3 w-10 h-1 bg-green-500 rounded-full group-hover:w-20 transition-all duration-500" />
-                    <h4 className="text-2xl font-bold mb-3 text-white tracking-tight">
-                      {item.title}
-                    </h4>
-                    <p className="text-slate-300 leading-relaxed font-medium text-sm opacity-90">
-                      {item.desc}
-                    </p>
+                {/* 이미지를 클릭하면 원본 이미지가 새 탭에서 열리도록 전체 영역을 감싸는 형태로 수정 */}
+                <a href={item.img} target="_blank" rel="noopener noreferrer" className="block">
+                  <div className="relative h-[400px] w-full overflow-hidden">
+                    <Image
+                      src={item.img}
+                      alt={item.title}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-700"
+                      unoptimized
+                    />
+                    {/* 어두운 오버레이 */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent opacity-90" />
+                    {/* 텍스트 오버레이 */}
+                    <div className="absolute bottom-0 p-8 w-full transform transition-transform duration-500">
+                      <div className="mb-3 w-10 h-1 bg-green-500 rounded-full group-hover:w-20 transition-all duration-500" />
+                      <h4 className="text-2xl font-bold mb-3 text-white tracking-tight">
+                        {item.title}
+                      </h4>
+                      <p className="text-slate-300 leading-relaxed font-medium text-sm opacity-90">
+                        {item.desc}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                </a>
               </div>
             ))}
           </div>
@@ -198,83 +199,71 @@ export default function Home() {
       {/* ==================== 4️⃣ Contact ==================== */}
       <section id="contact" className="py-24 bg-slate-950 scroll-mt-24">
         <div className="max-w-4xl mx-auto px-4">
-          <div className="bg-white rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full -mr-16 -mt-16" />
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-black text-slate-900 mb-4">
-                상담 문의하기
-              </h2>
-              <p className="text-slate-600 font-bold">
-                탄소중립을 향한 기술 협력을 기다립니다.
-              </p>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-black text-slate-700 mb-2 uppercase">
-                    Name / Organization
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-5 py-4 rounded-xl bg-slate-50 border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900"
-                    placeholder="성함 또는 기관명을 입력하세요"
-                    value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-black text-slate-700 mb-2 uppercase">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    className="w-full px-5 py-4 rounded-xl bg-slate-50 border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900"
-                    placeholder="example@domain.com"
-                    value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-              </div>
-
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-black text-slate-700 mb-2 uppercase">
-                  Message
+                  Name / Organization
                 </label>
-                <textarea
-                  rows={5}
-                  className="w-full px-5 py-4 rounded-xl bg-slate-50 border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900"
-                  placeholder="상세한 문의 내용을 남겨주시면 연구소 담당자가 연락드립니다."
-                  value={formData.message}
-                  onChange={(e) =>
-                    setFormData({ ...formData, message: e.target.value })
-                  }
+                <input
+                  type="text"
+                  name="name"
                   required
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full px-5 py-4 rounded-xl bg-slate-50 border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900"
+                  placeholder="성함 또는 기관명"
                 />
               </div>
+              <div>
+                <label className="block text-sm font-black text-slate-700 mb-2 uppercase">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full px-5 py-4 rounded-xl bg-slate-50 border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900"
+                  placeholder="example@domain.com"
+                />
+              </div>
+            </div>
 
-              <button className="w-full bg-green-600 hover:bg-green-700 text-white py-5 rounded-xl text-xl font-bold transition-all shadow-lg active:scale-[0.98]">
-                {status === "sending" ? "전송 중..." : "인증된 메시지 보내기"}
-              </button>
+            <div>
+              <label className="block text-sm font-black text-slate-700 mb-2 uppercase">
+                Message
+              </label>
+              <textarea
+                name="message"
+                required
+                rows={5}
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                className="w-full px-5 py-4 rounded-xl bg-slate-50 border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900"
+                placeholder="문의 내용을 입력해 주세요."
+              />
+            </div>
 
-              {status === "success" && (
-                <p className="text-center text-green-600 font-black">
-                  정상적으로 전송되었습니다. 검토 후 연락드리겠습니다.
-                </p>
-              )}
-              {status === "error" && (
-                <p className="text-center text-red-500 font-bold">
-                  서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.
-                </p>
-              )}
-            </form>
-          </div>
+            <button
+              className="w-full bg-green-600 hover:bg-green-700 text-white py-5 rounded-xl text-xl font-bold transition-all shadow-lg"
+              type="submit"
+            >
+              {status === "sending" ? "전송 중..." : "인증된 메시지 보내기"}
+            </button>
+
+            {status === "success" && (
+              <p className="text-center text-green-600 font-black">
+                정상적으로 전송되었습니다. 검토 후 연락드리겠습니다.
+              </p>
+            )}
+            {status === "error" && (
+              <p className="text-center text-red-500 font-bold">
+                서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.
+              </p>
+            )}
+          </form>
         </div>
       </section>
     </main>

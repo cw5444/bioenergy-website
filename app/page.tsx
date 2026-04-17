@@ -1,22 +1,25 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 export default function Home() {
+  /* ---------- Contact Form State ---------- */
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
-    
-    // Supabase 연동 로직 (이전 로직 유지)
+
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
+
       if (response.ok) {
         setStatus("success");
         setFormData({ name: "", email: "", message: "" });
@@ -30,114 +33,239 @@ export default function Home() {
 
   return (
     <main className="min-h-screen">
-      {/* 1. Hero Section: 이전의 선명한 그린 그라데이션 복구 */}
-      <section id="intro" className="relative h-[90vh] flex items-center justify-center bg-slate-900 overflow-hidden scroll-mt-24">
+      {/* ==================== 1️⃣ Hero ==================== */}
+      <section
+        id="intro"
+        className="relative h-[90vh] flex items-center justify-center bg-slate-900 overflow-hidden scroll-mt-24"
+      >
         <div className="absolute inset-0 opacity-70 bg-gradient-to-br from-green-600 via-emerald-800 to-slate-950" />
-        
         <div className="relative z-10 text-center px-4 max-w-5xl">
           <div className="inline-block px-4 py-1.5 mb-6 border border-green-400/30 rounded-full bg-green-500/10 backdrop-blur-sm">
             <span className="text-green-300 font-bold tracking-widest uppercase text-xs">
-              National University Research Institute
+              Sustainable Future
             </span>
           </div>
-          
-          <h1 className="text-6xl md:text-8xl font-black text-white mb-8 leading-[1.1] tracking-tight">
-            <span className="text-4xl md:text-5xl font-light opacity-90 block mb-2">탄소중립의 해답,</span>
+
+          <h1 className="text-5xl md:text-7xl font-black text-white mb-8 leading-[1.2] tracking-tight">
+            탄소중립의 해답,
+            <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-300 via-emerald-400 to-green-300">
-              바이오에너지
+              바이오에너지가 미래입니다
             </span>
           </h1>
-          
-          <p className="text-xl md:text-2xl text-slate-200 mb-12 leading-relaxed font-normal max-w-3xl mx-auto">
-            국립 전남대학교 <span className="font-bold text-white underline underline-offset-4 decoration-green-500">바이오에너지연구소(BRC)</span>는 <br className="hidden md:block" />
-            자연에서 얻은 에너지를 인류의 지속 가능한 미래로 바꿉니다.
+
+          <p className="text-xl md:text-2xl text-slate-200 mb-12 leading-relaxed max-w-3xl mx-auto">
+            바이오에너지는 화석연료를 대체하고 지구 온난화를 멈출 수 있는 가장 현실적인 대안입니다.
+            <br className="hidden md:block" />
+            우리 연구소는 지속 가능한 에너지 생태계를 연구합니다.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-5 justify-center">
-            <Link href="#contact" className="bg-green-600 hover:bg-green-500 text-white px-12 py-5 rounded-full text-xl font-bold transition-all shadow-[0_0_30px_rgba(34,197,94,0.4)]">
-              지금 상담하기
+            <Link
+              href="#contact"
+              className="bg-green-600 hover:bg-green-500 text-white px-12 py-5 rounded-full text-xl font-bold transition-all shadow-[0_0_30px_rgba(34,197,94,0.4)]"
+            >
+              상담 문의하기
             </Link>
-            <Link href="#tech" className="bg-white/10 hover:bg-white/20 text-white border border-white/30 backdrop-blur-md px-12 py-5 rounded-full text-xl font-bold transition-all">
-              기술현황 보기
+            <Link
+              href="#timeline"
+              className="bg-white/10 hover:bg-white/20 text-white border border-white/30 backdrop-blur-md px-12 py-5 rounded-full text-xl font-bold transition-all"
+            >
+              연혁 확인하기
             </Link>
           </div>
         </div>
       </section>
 
-      {/* 2. Tech Section: scroll-mt-24 적용 */}
-      <section id="tech" className="py-24 bg-white scroll-mt-24">
-        <div className="max-w-7xl mx-auto px-4">
+      {/* ==================== 2️⃣ Timeline ==================== */}
+      <section id="timeline" className="py-24 bg-slate-50 scroll-mt-24">
+        <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight">Our Technology</h2>
-            <h3 className="text-4xl font-extrabold text-slate-900">핵심 연구 분야</h3>
+            <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight">
+              History
+            </h2>
+            <h3 className="text-4xl font-extrabold text-slate-900">
+              주요 연혁
+            </h3>
           </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
+
+          <div className="space-y-12">
             {[
-              { title: "바이오매스 발전", desc: "미활용 산림 자원을 이용한 친환경 전력 생산 기술을 연구합니다.", icon: "🌱" },
-              { title: "그린 수소 생산", desc: "바이오 가스를 개질하여 순도 높은 수소를 저비용으로 생산합니다.", icon: "💧" },
-              { title: "탄소 포집(CCUS)", desc: "에너지 생산 과정에서 발생하는 탄소를 포획하여 자원화합니다.", icon: "⚡" },
+              {
+                year: "2006",
+                content: "전남대학교와 산학협력 MOU 체결 및 바이오에너지 연구 기반 구축",
+              },
+              {
+                year: "2007",
+                content: "차세대 바이오에탄올 생산 기술 Pilot Plant 설계 완료",
+              },
+              {
+                year: "2008",
+                content:
+                  "전남대학교 **농생대 3호관** 연구소 개소 및 파일럿 플랜트 가동",
+              },
+              {
+                year: "2010",
+                content:
+                  "고활성 효소 공동 연구 및 국제 바이오에너지 심포지엄 개최",
+              },
+              {
+                year: "2012",
+                content:
+                  "기능성 바이오 소재 추출 공정 특허 출원 및 상용화 기술 확보",
+              },
             ].map((item, idx) => (
-              <div key={idx} className="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:border-green-200 transition-all group">
-                <div className="text-4xl mb-6">{item.icon}</div>
-                <h4 className="text-xl font-bold mb-4 text-slate-900 group-hover:text-green-700 transition-colors uppercase">{item.title}</h4>
-                <p className="text-slate-600 leading-relaxed">{item.desc}</p>
+              <div
+                key={idx}
+                className="flex gap-8 items-start border-l-4 border-green-500 pl-8 relative"
+              >
+                <div className="absolute w-4 h-4 bg-green-500 rounded-full -left-[10px] top-1" />
+                <span className="text-2xl font-black text-green-700 w-24 shrink-0">
+                  {item.year}
+                </span>
+                <p className="text-xl text-slate-700 font-medium pt-0.5">
+                  {item.content}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 3. Contact Section: Supabase 연동 폼 복구 */}
-      <section id="contact" className="py-24 bg-slate-900 scroll-mt-24">
+      {/* ==================== 3️⃣ Research Status ==================== */}
+      <section id="status" className="py-24 bg-white scroll-mt-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight">
+              Research Status
+            </h2>
+            <h3 className="text-4xl font-extrabold text-slate-900 border-b-4 border-green-600 inline-block pb-2">
+              연구 현황
+            </h3>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-10">
+            {[
+              {
+                title: "Bio‑Ethanol",
+                desc: "고효율 바이오에탄올 생산 공정 최적화 및 상용화 연구",
+                img: "/images/bioethanol-edited.jpg",
+              },
+              {
+                title: "High‑Activity Enzymes",
+                desc: "바이오매스 분해 효율 극대화를 위한 고활성 효소 칵테일 개발",
+                img: "/images/enzyme-edited.jpg",
+              },
+              {
+                title: "Functional Materials",
+                desc: "바이오 공정 부산물을 활용한 고부가가치 기능성 소재 추출",
+                img: "/images/functional-edited.jpg",
+              },
+            ].map((item, idx) => (
+              <div
+                key={idx}
+                className="group bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-100 hover:shadow-2xl transition-all"
+              >
+                <div className="relative h-64 w-full">
+                  <Image
+                    src={item.img}
+                    alt={item.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+                <div className="p-8">
+                  <h4 className="text-2xl font-bold mb-4 text-slate-900">
+                    {item.title}
+                  </h4>
+                  <p className="text-slate-600 leading-relaxed font-medium">
+                    {item.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== 4️⃣ Contact ==================== */}
+      <section id="contact" className="py-24 bg-slate-950 scroll-mt-24">
         <div className="max-w-4xl mx-auto px-4">
-          <div className="bg-white rounded-[3rem] p-10 md:p-16 shadow-2xl">
+          <div className="bg-white rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full -mr-16 -mt-16" />
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-4">프로젝트 문의하기</h2>
-              <p className="text-slate-600 font-medium">실현 가능한 친환경 에너지를 함께 논의합니다.</p>
+              <h2 className="text-4xl font-black text-slate-900 mb-4">
+                상담 문의하기
+              </h2>
+              <p className="text-slate-600 font-bold">
+                탄소중립을 향한 기술 협력을 기다립니다.
+              </p>
             </div>
-            
+
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">성함/기관명</label>
-                  <input 
-                    type="text" 
-                    className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900" 
-                    placeholder="홍길동 / 전남대학교"
+                  <label className="block text-sm font-black text-slate-700 mb-2 uppercase">
+                    Name / Organization
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-5 py-4 rounded-xl bg-slate-50 border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900"
+                    placeholder="성함 또는 기관명을 입력하세요"
                     value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2">이메일 주소</label>
-                  <input 
-                    type="email" 
-                    className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900" 
-                    placeholder="example@jnu.ac.kr"
+                  <label className="block text-sm font-black text-slate-700 mb-2 uppercase">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    className="w-full px-5 py-4 rounded-xl bg-slate-50 border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900"
+                    placeholder="example@domain.com"
                     value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
                     required
                   />
                 </div>
               </div>
+
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">문의 내용</label>
-                <textarea 
-                  rows={5} 
-                  className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900" 
-                  placeholder="협업 제안이나 기술 문의 내용을 입력해 주세요."
+                <label className="block text-sm font-black text-slate-700 mb-2 uppercase">
+                  Message
+                </label>
+                <textarea
+                  rows={5}
+                  className="w-full px-5 py-4 rounded-xl bg-slate-50 border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900"
+                  placeholder="상세한 문의 내용을 남겨주시면 연구소 담당자가 연락드립니다."
                   value={formData.message}
-                  onChange={(e) => setFormData({...formData, message: e.target.value})}
+                  onChange={(e) =>
+                    setFormData({ ...formData, message: e.target.value })
+                  }
                   required
                 />
               </div>
-              <button className="w-full bg-green-600 hover:bg-green-700 text-white py-5 rounded-2xl text-xl font-bold transition-all shadow-lg shadow-green-600/20 active:scale-[0.98]">
-                {status === "sending" ? "전송 중..." : "전송하기"}
+
+              <button className="w-full bg-green-600 hover:bg-green-700 text-white py-5 rounded-xl text-xl font-bold transition-all shadow-lg active:scale-[0.98]">
+                {status === "sending" ? "전송 중..." : "인증된 메시지 보내기"}
               </button>
-              {status === "success" && <p className="text-center text-green-600 font-bold">성공적으로 발송되었습니다!</p>}
-              {status === "error" && <p className="text-center text-red-500 font-bold">오류가 발생했습니다. 다시 시도해 주세요.</p>}
+
+              {status === "success" && (
+                <p className="text-center text-green-600 font-black">
+                  정상적으로 전송되었습니다. 검토 후 연락드리겠습니다.
+                </p>
+              )}
+              {status === "error" && (
+                <p className="text-center text-red-500 font-bold">
+                  서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.
+                </p>
+              )}
             </form>
           </div>
         </div>

@@ -23,23 +23,23 @@ export default function Header() {
         {/* ② 네비게이션 (앵커 링크) */}
         <ul className="flex space-x-4 text-sm font-medium">
           <li>
-            <Link href="#intro">
-              <a className="hover:text-green-600 transition">소개</a>
+            <Link href="#intro" className="hover:text-green-600 transition">
+              소개
             </Link>
           </li>
           <li>
-            <Link href="#timeline">
-              <a className="hover:text-green-600 transition">연혁</a>
+            <Link href="#timeline" className="hover:text-green-600 transition">
+              연혁
             </Link>
           </li>
           <li>
-            <Link href="#status">
-              <a className="hover:text-green-600 transition">연구 현황</a>
+            <Link href="#status" className="hover:text-green-600 transition">
+              연구 현황
             </Link>
           </li>
           <li>
-            <Link href="#contact">
-              <a className="hover:text-green-600 transition">연락처</a>
+            <Link href="#contact" className="hover:text-green-600 transition">
+              연락처
             </Link>
           </li>
         </ul>

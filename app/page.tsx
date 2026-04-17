@@ -172,6 +172,7 @@ export default function Home() {
                     alt={item.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    unoptimized
                   />
                 </div>
                 <div className="p-8">
@@ -273,3 +274,4 @@ export default function Home() {
     </main>
   );
 }
+

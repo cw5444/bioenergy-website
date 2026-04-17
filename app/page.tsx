@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import { useState } from "react";
 
@@ -113,7 +111,7 @@ export default function HomePage() {
           {/* 2008 */}
           <li className="flex items-start">
             <span className="w-20 font-mono text-green-700">2008‑01</span>
-            <p>전남대 농업생명과학대학(농생대) 3호관에 연구소 개소·온실 건축</p>
+            <p>전남대 농업생명과학대학 3호관에 연구소 개소·온실 건축</p>
           </li>
           <li className="flex items-start">
             <span className="w-20 font-mono text-green-700">2008‑04</span>
@@ -330,4 +328,3 @@ export default function HomePage() {
     </main>
   );
 }
-

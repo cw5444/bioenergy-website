@@ -9,6 +9,9 @@ export default function Home() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState("");
 
+  /* ---------- Image Modal State ---------- */
+  const [selectedImg, setSelectedImg] = useState<string | null>(null);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
@@ -132,7 +135,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ==================== 3️⃣ Research Status (사진 클릭 시 전체보기 적용) ==================== */}
+      {/* ==================== 3️⃣ Research Status (모달 기능 적용) ==================== */}
       <section id="status" className="py-24 bg-white scroll-mt-24">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
@@ -164,37 +167,54 @@ export default function Home() {
             ].map((item, idx) => (
               <div
                 key={idx}
-                className="group relative bg-slate-900 rounded-[2rem] overflow-hidden shadow-2xl transition-all duration-500 border border-slate-100"
+                className="group relative bg-slate-900 rounded-[2rem] overflow-hidden shadow-2xl transition-all duration-500 border border-slate-100 cursor-pointer"
+                onClick={() => setSelectedImg(item.img)}
               >
-                {/* 이미지를 클릭하면 원본 이미지가 새 탭에서 열리도록 전체 영역을 감싸는 형태로 수정 */}
-                <a href={item.img} target="_blank" rel="noopener noreferrer" className="block">
-                  <div className="relative h-[400px] w-full overflow-hidden">
-                    <Image
-                      src={item.img}
-                      alt={item.title}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-700"
-                      unoptimized
-                    />
-                    {/* 어두운 오버레이 */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent opacity-90" />
-                    {/* 텍스트 오버레이 */}
-                    <div className="absolute bottom-0 p-8 w-full transform transition-transform duration-500">
-                      <div className="mb-3 w-10 h-1 bg-green-500 rounded-full group-hover:w-20 transition-all duration-500" />
-                      <h4 className="text-2xl font-bold mb-3 text-white tracking-tight">
-                        {item.title}
-                      </h4>
-                      <p className="text-slate-300 leading-relaxed font-medium text-sm opacity-90">
-                        {item.desc}
-                      </p>
-                    </div>
+                <div className="relative h-[400px] w-full overflow-hidden">
+                  <Image
+                    src={item.img}
+                    alt={item.title}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    unoptimized
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent opacity-90" />
+                  <div className="absolute bottom-0 p-8 w-full transform transition-transform duration-500">
+                    <div className="mb-3 w-10 h-1 bg-green-500 rounded-full group-hover:w-20 transition-all duration-500" />
+                    <h4 className="text-2xl font-bold mb-3 text-white tracking-tight">
+                      {item.title}
+                    </h4>
+                    <p className="text-slate-300 leading-relaxed font-medium text-sm opacity-90">
+                      {item.desc}
+                    </p>
                   </div>
-                </a>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
+
+      {/* 이미지 확대 모달 (Overlay) */}
+      {selectedImg && (
+        <div 
+          className="fixed inset-0 z-[1000] bg-black/90 flex items-center justify-center p-4 cursor-zoom-out"
+          onClick={() => setSelectedImg(null)}
+        >
+          <div className="relative w-full max-w-5xl h-full max-h-[85vh]">
+            <Image
+              src={selectedImg}
+              alt="Full view"
+              fill
+              className="object-contain"
+              unoptimized
+            />
+          </div>
+          <button className="absolute top-8 right-8 text-white text-4xl font-light hover:text-green-500 transition-colors">
+            &times;
+          </button>
+        </div>
+      )}
 
       {/* ==================== 4️⃣ Contact ==================== */}
       <section id="contact" className="py-24 bg-slate-950 scroll-mt-24">

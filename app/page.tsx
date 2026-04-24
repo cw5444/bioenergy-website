@@ -2,14 +2,23 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   /* ---------- 상태 관리 ---------- */
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState("");
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // 모바일 메뉴 상태
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  /* ---------- 스크롤 시 메뉴 닫기 로직 ---------- */
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isMenuOpen) setIsMenuOpen(false);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isMenuOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,7 +42,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-white">
-      {/* ==================== 0️⃣ Header (모바일 메뉴 반영) ==================== */}
+      {/* ==================== 0️⃣ Header ==================== */}
       <header className="fixed top-0 w-full z-[100] bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
         <nav className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
           <div className="flex items-center gap-4">
@@ -57,26 +66,32 @@ export default function Home() {
           </div>
 
           {/* 모바일 햄버거 버튼 */}
-          <button className="md:hidden flex flex-col gap-1.5" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <button className="md:hidden flex flex-col gap-1.5 z-[110]" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             <div className={`w-6 h-0.5 bg-slate-900 transition-all ${isMenuOpen ? "rotate-45 translate-y-2" : ""}`} />
             <div className={`w-6 h-0.5 bg-slate-900 ${isMenuOpen ? "opacity-0" : ""}`} />
             <div className={`w-6 h-0.5 bg-slate-900 transition-all ${isMenuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
           </button>
         </nav>
 
-        {/* 모바일 사이드바 메뉴 */}
-        <div className={`fixed inset-0 top-20 bg-white z-[99] transition-transform duration-300 ${isMenuOpen ? "translate-x-0" : "translate-x-full"} md:hidden`}>
-          <div className="flex flex-col p-8 space-y-6 text-xl font-bold text-slate-800">
-            <Link href="#intro" onClick={() => setIsMenuOpen(false)}>연구소 소개</Link>
-            <Link href="#timeline" onClick={() => setIsMenuOpen(false)}>연혁</Link>
-            <Link href="#status" onClick={() => setIsMenuOpen(false)}>연구 현황</Link>
-            <Link href="#product" onClick={() => setIsMenuOpen(false)}>주요 제품</Link>
-            <Link href="#contact" onClick={() => setIsMenuOpen(false)} className="inline-block text-green-600">문의하기</Link>
+        {/* 모바일 사이드바 메뉴 (우측 일부만 차지, 배경 효과 추가) */}
+        <div 
+          className={`fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-[100] transition-opacity duration-300 ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"} md:hidden`}
+          onClick={() => setIsMenuOpen(false)}
+        >
+          <div 
+            className={`absolute right-0 top-0 h-screen w-[280px] bg-white shadow-2xl transition-transform duration-300 transform ${isMenuOpen ? "translate-x-0" : "translate-x-full"} p-8 flex flex-col space-y-6 pt-28`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Link href="#intro" className="text-xl font-bold text-slate-800 border-b border-slate-50 pb-2" onClick={() => setIsMenuOpen(false)}>연구소 소개</Link>
+            <Link href="#timeline" className="text-xl font-bold text-slate-800 border-b border-slate-50 pb-2" onClick={() => setIsMenuOpen(false)}>연혁</Link>
+            <Link href="#status" className="text-xl font-bold text-slate-800 border-b border-slate-50 pb-2" onClick={() => setIsMenuOpen(false)}>연구 현황</Link>
+            <Link href="#product" className="text-xl font-bold text-slate-800 border-b border-slate-50 pb-2" onClick={() => setIsMenuOpen(false)}>주요 제품</Link>
+            <Link href="#contact" className="text-xl font-bold text-green-600 pt-4" onClick={() => setIsMenuOpen(false)}>문의하기</Link>
           </div>
         </div>
       </header>
 
-      {/* ==================== 1️⃣ Hero (가림 현상 방지를 위해 pt-20 추가 및 링크 수정) ==================== */}
+      {/* ==================== 1️⃣ Hero (텍스트 수정 및 여백 최적화) ==================== */}
       <section id="intro" className="relative h-screen flex items-center justify-center bg-slate-900 overflow-hidden pt-20 scroll-mt-20">
         <div className="absolute inset-0 opacity-70 bg-gradient-to-br from-green-600 via-emerald-800 to-slate-950" />
         <div className="relative z-10 text-center px-4 max-w-5xl">
@@ -84,7 +99,7 @@ export default function Home() {
             <span className="text-green-300 font-bold tracking-widest uppercase text-xs">Sustainable Future</span>
           </div>
 
-          <h1 className="text-4xl md:text-7xl font-black text-white mb-8 leading-[1.2] tracking-tight">
+          <h1 className="text-4xl md:text-7xl font-black text-white mb-8 leading-[1.2] tracking-tight text-balance">
             탄소중립의 해답,
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-300 via-emerald-400 to-green-300">
@@ -99,12 +114,11 @@ export default function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-5 justify-center">
-            {/* 왼쪽 버튼을 연구현황으로, 오른쪽 버튼을 프로덕트로 연결 */}
             <Link href="#status" className="bg-green-600 hover:bg-green-500 text-white px-12 py-5 rounded-full text-xl font-bold transition-all shadow-lg">
               연구 현황 확인
             </Link>
             <Link href="#product" className="bg-white/10 hover:bg-white/20 text-white border border-white/30 backdrop-blur-md px-12 py-5 rounded-full text-xl font-bold transition-all">
-              주요 제품(Product)
+              주요 제품
             </Link>
           </div>
         </div>
@@ -164,10 +178,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ==================== 4️⃣ Product (새로 추가된 섹션) ==================== */}
+      {/* ==================== 4️⃣ Product ==================== */}
       <section id="product" className="py-24 bg-slate-50 scroll-mt-20 text-center">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight">Main Product</h2>
+          <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight">Main Business</h2>
           <h3 className="text-4xl font-extrabold text-slate-900 mb-8">주요 제품 및 사업</h3>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto mb-16 leading-relaxed">
             일반적으로 생산이 어렵거나 고가인 <span className="text-green-700 font-bold underline">MOS, XOS, COS</span> 등의 기능성 소재를 
@@ -179,7 +193,7 @@ export default function Home() {
               { name: "XOS", desc: "자일로올리고당 기반의 고부가가치 천연 소재로 활용도가 높습니다." },
               { name: "COS", desc: "생산 난도가 매우 높은 키토올리고당을 독자 기술로 맞춤 제작합니다." }
             ].map((p, idx) => (
-              <div key={idx} className="bg-white p-10 rounded-3xl shadow-sm border border-slate-100 hover:shadow-lg transition-all">
+              <div key={idx} className="bg-white p-10 rounded-3xl shadow-sm border border-slate-100 hover:shadow-lg transition-all border-b-4 hover:border-green-500">
                 <div className="text-4xl font-black text-green-600 mb-4">{p.name}</div>
                 <p className="text-slate-600">{p.desc}</p>
               </div>
@@ -194,7 +208,7 @@ export default function Home() {
           <div className="relative w-full max-w-5xl h-full max-h-[85vh] drop-shadow-2xl">
             <Image src={selectedImg} alt="Full view" fill className="object-contain" unoptimized />
           </div>
-          <button className="absolute top-8 right-8 text-white bg-slate-800/50 w-12 h-12 rounded-full flex items-center justify-center text-3xl">&times;</button>
+          <button className="absolute top-8 right-8 text-white bg-slate-800/50 w-12 h-12 rounded-full flex items-center justify-center text-3xl transition-all hover:bg-slate-700">&times;</button>
         </div>
       )}
 
@@ -205,13 +219,13 @@ export default function Home() {
             <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight">Inquiry</h2>
             <h3 className="text-4xl font-extrabold text-slate-900">문의하기</h3>
           </div>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6 font-medium">
             <div className="grid md:grid-cols-2 gap-6">
-              <input type="text" placeholder="성함 또는 기관명" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none focus:border-green-500 transition-all" />
-              <input type="email" placeholder="이메일 주소" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none focus:border-green-500 transition-all" />
+              <input type="text" placeholder="성함 또는 기관명" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none focus:border-green-500 transition-all text-slate-900" />
+              <input type="email" placeholder="이메일 주소" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none focus:border-green-500 transition-all text-slate-900" />
             </div>
-            <textarea rows={5} placeholder="문의 내용을 입력해 주세요." required value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none focus:border-green-500 transition-all" />
-            <button className="w-full bg-green-600 hover:bg-green-700 text-white py-5 rounded-xl text-xl font-bold transition-all shadow-lg" type="submit">
+            <textarea rows={5} placeholder="문의 내용을 입력해 주세요." required value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none focus:border-green-500 transition-all text-slate-900" />
+            <button className="w-full bg-green-600 hover:bg-green-700 text-white py-5 rounded-xl text-xl font-bold transition-all shadow-lg active:scale-[0.98]" type="submit">
               {status === "sending" ? "전송 중..." : "문의 메시지 보내기"}
             </button>
             {status === "success" && <p className="text-center text-green-600 font-black">정상적으로 전송되었습니다.</p>}

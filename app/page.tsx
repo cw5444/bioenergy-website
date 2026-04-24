@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function Home() {
   /* ---------- 상태 관리 ---------- */
@@ -11,14 +11,42 @@ export default function Home() {
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  /* ---------- 스크롤 시 메뉴 닫기 ---------- */
+  // 외부 클릭/터치로 메뉴 닫기용 레퍼런스
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const hamburgerRef = useRef<HTMLButtonElement | null>(null);
+
+  /* ---------- 외부 클릭/터치 시 메뉴 닫기 ---------- */
+  useEffect(() => {
+    const handleOutside = (e: MouseEvent | TouchEvent) => {
+      if (!isMenuOpen) return;
+
+      const target = e.target as Node;
+
+      // 메인 Drawer 영역 안쪽을 클릭/터치하면 닫히지 않도록
+      if (menuRef.current && menuRef.current.contains(target)) return;
+
+      // 햄버거 버튼 자체를 클릭하면 닫히지 않도록
+      if (hamburgerRef.current && hamburgerRef.current.contains(target)) return;
+
+      // 외부 영역 클릭 시 닫기
+      setIsMenuOpen(false);
+    };
+
+    document.addEventListener("mousedown", handleOutside);
+    document.addEventListener("touchstart", handleOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleOutside);
+      document.removeEventListener("touchstart", handleOutside);
+    };
+  }, [isMenuOpen]);
+
+  /* ---------- 스크롤 및 일반 이벤트 ---------- */
   useEffect(() => {
     const handleScroll = () => { if (isMenuOpen) setIsMenuOpen(false); };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isMenuOpen]);
 
-  /* ---------- 문의 폼 전송 ---------- */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
@@ -45,12 +73,14 @@ export default function Home() {
               <span className="text-2xl font-black tracking-tighter text-slate-900">Celltebah</span>
               <span className="text-[10px] text-green-700 font-bold uppercase tracking-widest">Bioenergy Research Center</span>
             </Link>
+            {/* 전남대학교 로고 영역 복구 */}
             <div className="h-8 w-[1px] bg-slate-200 mx-1 hidden sm:block" />
             <a href="https://www.jnu.ac.kr" target="_blank" rel="noopener noreferrer" className="relative h-7 w-32 hidden sm:block">
               <Image src="/images/jnu-logo.svg" alt="전남대학교" fill className="object-contain opacity-80" unoptimized />
             </a>
           </div>
 
+          {/* 데스크탑 메뉴 */}
           <div className="hidden md:flex items-center gap-8 text-[15px] font-bold text-slate-600">
             <Link href="#intro" className="hover:text-green-600 transition-colors">연구소 소개</Link>
             <Link href="#timeline" className="hover:text-green-600 transition-colors">연혁</Link>
@@ -59,32 +89,32 @@ export default function Home() {
             <Link href="#contact" className="bg-green-600 text-white px-6 py-2.5 rounded-full hover:bg-green-500 transition-all shadow-md">문의하기</Link>
           </div>
 
-          <button className="md:hidden flex flex-col gap-1.5 z-[110] relative p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            <div className={`w-6 h-0.5 transition-all ${isMenuOpen ? "rotate-45 translate-y-2 bg-white" : "bg-slate-900"}`} />
+          {/* 모바일 햄버거 버튼 */}
+          <button ref={hamburgerRef} className="md:hidden flex flex-col gap-1.5 z-[110]" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <div className={`w-6 h-0.5 bg-slate-900 transition-all ${isMenuOpen ? "rotate-45 translate-y-2 !bg-white" : ""}`} />
             <div className={`w-6 h-0.5 bg-slate-900 ${isMenuOpen ? "opacity-0" : ""}`} />
-            <div className={`w-6 h-0.5 transition-all ${isMenuOpen ? "-rotate-45 -translate-y-2 bg-white" : "bg-slate-900"}`} />
+            <div className={`w-6 h-0.5 bg-slate-900 transition-all ${isMenuOpen ? "-rotate-45 -translate-y-2 !bg-white" : ""}`} />
           </button>
         </nav>
 
-        {/* 모바일 메뉴 오버레이: 배경 터치/클릭 즉시 반응 */}
+        {/* 모바일 메뉴 오버레이: 배경 클릭/터치로 닫힘(앞에서 보강) */}
         <div 
-          className={`fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[100] transition-opacity duration-300 md:hidden ${isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+          className={`fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[100] transition-opacity duration-300 ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
           onClick={() => setIsMenuOpen(false)}
-          onTouchStart={() => setIsMenuOpen(false)} // 모바일 터치 즉각 대응
+          onTouchStart={() => setIsMenuOpen(false)}
         >
-          {/* 사이드바 본체: 텍스트 영역 내부 클릭 시는 닫히지 않도록 stopPropagation */}
+          {/* Drawer: 이 영역 밖을 클릭해도 닫히도록, 화면 밖 클릭은 overlay에서 처리되도록 위치시키고, 내부 클릭은 stopPropagation */}
           <div 
-            className={`absolute right-0 top-0 h-screen w-[270px] bg-slate-900 shadow-2xl transition-transform duration-300 transform ${isMenuOpen ? "translate-x-0" : "translate-x-full"} p-8 flex flex-col pt-32`}
+            ref={menuRef}
+            className={`absolute right-0 top-0 h-screen w-[270px] bg-slate-900/95 shadow-2xl transition-transform duration-300 transform ${isMenuOpen ? "translate-x-0" : "translate-x-full"} p-8 flex flex-col pt-32`}
             onClick={(e) => e.stopPropagation()}
             onTouchStart={(e) => e.stopPropagation()}
           >
-            <div className="flex flex-col space-y-7">
-              <Link href="#intro" className="text-xl font-bold text-slate-200 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>연구소 소개</Link>
-              <Link href="#timeline" className="text-xl font-bold text-slate-200 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>연혁</Link>
-              <Link href="#status" className="text-xl font-bold text-slate-200 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>연구 현황</Link>
-              <Link href="#product" className="text-xl font-bold text-slate-200 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>주요 제품</Link>
-              <Link href="#contact" className="text-2xl font-bold text-green-400 pt-4" onClick={() => setIsMenuOpen(false)}>문의하기</Link>
-            </div>
+            <Link href="#intro" className="text-xl font-bold text-slate-200 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>연구소 소개</Link>
+            <Link href="#timeline" className="text-xl font-bold text-slate-200 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>연혁</Link>
+            <Link href="#status" className="text-xl font-bold text-slate-200 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>연구 현황</Link>
+            <Link href="#product" className="text-xl font-bold text-slate-200 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>주요 제품</Link>
+            <Link href="#contact" className="text-2xl font-bold text-green-400 pt-4" onClick={() => setIsMenuOpen(false)}>문의하기</Link>
           </div>
         </div>
       </header>
@@ -109,10 +139,10 @@ export default function Home() {
             우리 연구소는 지속 가능한 에너지와 고부가가치 소재 생태계를 연구합니다.
           </p>
           <div className="flex flex-col sm:flex-row gap-5 justify-center">
-            <Link href="#status" className="bg-green-600 hover:bg-green-500 text-white px-12 py-5 rounded-full text-xl font-bold transition-all shadow-lg active:scale-95">
+            <Link href="#status" className="bg-green-600 hover:bg-green-500 text-white px-12 py-5 rounded-full text-xl font-bold transition-all shadow-lg">
               연구 현황
             </Link>
-            <Link href="#product" className="bg-white/10 hover:bg-white/20 text-white border border-white/30 backdrop-blur-md px-12 py-5 rounded-full text-xl font-bold transition-all active:scale-95">
+            <Link href="#product" className="bg-white/10 hover:bg-white/20 text-white border border-white/30 backdrop-blur-md px-12 py-5 rounded-full text-xl font-bold transition-all">
               주요 제품
             </Link>
           </div>
@@ -123,7 +153,7 @@ export default function Home() {
       <section id="timeline" className="py-24 bg-slate-50 scroll-mt-20">
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight text-sm">History</h2>
+            <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight">History</h2>
             <h3 className="text-4xl font-extrabold text-slate-900">주요 연혁</h3>
           </div>
           <div className="space-y-12">
@@ -137,7 +167,7 @@ export default function Home() {
               <div key={idx} className="flex gap-8 items-start border-l-4 border-green-500 pl-8 relative">
                 <div className="absolute w-4 h-4 bg-green-500 rounded-full -left-[10px] top-1" />
                 <span className="text-2xl font-black text-green-700 w-24 shrink-0">{item.year}</span>
-                <p className="text-xl text-slate-700 font-medium pt-0.5 leading-snug">{item.content}</p>
+                <p className="text-xl text-slate-700 font-medium pt-0.5">{item.content}</p>
               </div>
             ))}
           </div>
@@ -148,7 +178,7 @@ export default function Home() {
       <section id="status" className="py-24 bg-white scroll-mt-20">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight text-sm">Research Status</h2>
+            <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight">Research Status</h2>
             <h3 className="text-4xl font-extrabold text-slate-900 border-b-4 border-green-600 inline-block pb-2">연구 현황</h3>
           </div>
           <div className="grid md:grid-cols-3 gap-10">
@@ -158,13 +188,13 @@ export default function Home() {
               { title: "Functional Materials", desc: "바이오 공정 부산물을 활용한 고부가가치 기능성 소재 추출", img: "/images/functional-edited.jpg" },
             ].map((item, idx) => (
               <div key={idx} className="group relative bg-slate-900 rounded-[2rem] overflow-hidden shadow-2xl transition-all duration-500 border border-slate-100 cursor-pointer" onClick={() => setSelectedImg(item.img)}>
-                <div className="relative h-[400px] w-full">
+                <div className="relative h-[400px] w-full overflow-hidden">
                   <Image src={item.img} alt={item.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" unoptimized />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent opacity-90" />
-                  <div className="absolute bottom-0 p-8 w-full">
+                  <div className="absolute bottom-0 p-8 w-full transition-transform duration-500">
                     <div className="mb-3 w-10 h-1 bg-green-500 rounded-full group-hover:w-20 transition-all duration-500" />
                     <h4 className="text-2xl font-bold mb-3 text-white tracking-tight">{item.title}</h4>
-                    <p className="text-slate-300 font-medium text-sm leading-relaxed">{item.desc}</p>
+                    <p className="text-slate-300 leading-relaxed font-medium text-sm opacity-90">{item.desc}</p>
                   </div>
                 </div>
               </div>
@@ -176,7 +206,7 @@ export default function Home() {
       {/* ==================== 4️⃣ Product ==================== */}
       <section id="product" className="py-24 bg-slate-50 scroll-mt-20">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight text-sm">Main Business</h2>
+          <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight">Main Business</h2>
           <h3 className="text-4xl font-extrabold text-slate-900 mb-8">주요 제품 및 사업</h3>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto mb-16 leading-relaxed">
             일반적으로 생산이 어렵거나 고가인 <span className="text-green-700 font-bold underline">MOS, XOS, COS</span> 등의 기능성 소재를 
@@ -190,7 +220,7 @@ export default function Home() {
             ].map((p, idx) => (
               <div key={idx} className="bg-white p-10 rounded-3xl shadow-sm border border-slate-100 hover:shadow-lg transition-all border-b-4 hover:border-green-500">
                 <div className="text-4xl font-black text-green-600 mb-4">{p.name}</div>
-                <p className="text-slate-600 font-medium leading-relaxed">{p.desc}</p>
+                <p className="text-slate-600 font-medium">{p.desc}</p>
               </div>
             ))}
           </div>
@@ -200,10 +230,10 @@ export default function Home() {
       {/* 이미지 확대 모달 */}
       {selectedImg && (
         <div className="fixed inset-0 z-[1000] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 cursor-zoom-out" onClick={() => setSelectedImg(null)}>
-          <div className="relative w-full max-w-5xl h-[80vh]">
+          <div className="relative w-full max-w-5xl h-full max-h-[85vh] drop-shadow-2xl">
             <Image src={selectedImg} alt="Full view" fill className="object-contain" unoptimized />
           </div>
-          <button className="absolute top-8 right-8 text-white text-4xl hover:scale-110 transition-transform focus:outline-none">&times;</button>
+          <button className="absolute top-8 right-8 text-white bg-slate-800/50 w-12 h-12 rounded-full flex items-center justify-center text-3xl font-light hover:bg-slate-700 transition-all">&times;</button>
         </div>
       )}
 
@@ -211,19 +241,19 @@ export default function Home() {
       <section id="contact" className="py-24 bg-white scroll-mt-20">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight text-sm">Inquiry</h2>
+            <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight">Inquiry</h2>
             <h3 className="text-4xl font-extrabold text-slate-900">문의하기</h3>
           </div>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
-              <input type="text" placeholder="성함 또는 기관명" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full px-6 py-4 rounded-xl border border-slate-200 outline-none focus:border-green-500 bg-slate-50 text-slate-900 transition-all font-medium" />
-              <input type="email" placeholder="이메일 주소" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full px-6 py-4 rounded-xl border border-slate-200 outline-none focus:border-green-500 bg-slate-50 text-slate-900 transition-all font-medium" />
+              <input type="text" placeholder="성함 또는 기관명" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full px-6 py-4 rounded-xl border border-slate-200 outline-none focus:border-green-500 transition-all text-slate-900 bg-slate-50/50" />
+              <input type="email" placeholder="이메일 주소" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full px-6 py-4 rounded-xl border border-slate-200 outline-none focus:border-green-500 transition-all text-slate-900 bg-slate-50/50" />
             </div>
-            <textarea rows={5} placeholder="문의 내용을 입력해 주세요." required value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full px-6 py-4 rounded-xl border border-slate-200 outline-none focus:border-green-500 bg-slate-50 text-slate-900 transition-all font-medium" />
+            <textarea rows={5} placeholder="문의 내용을 입력해 주세요." required value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full px-6 py-4 rounded-xl border border-slate-200 outline-none focus:border-green-500 transition-all text-slate-900 bg-slate-50/50" />
             <button className="w-full bg-green-600 hover:bg-green-700 text-white py-5 rounded-xl text-xl font-bold transition-all shadow-lg active:scale-95" type="submit">
               {status === "sending" ? "전송 중..." : "문의 메시지 보내기"}
             </button>
-            {status === "success" && <p className="text-center text-green-600 font-bold">정상적으로 전송되었습니다.</p>}
+            {status === "success" && <p className="text-center text-green-600 font-black">정상적으로 전송되었습니다.</p>}
             {status === "error" && <p className="text-center text-red-500 font-bold">오류가 발생했습니다.</p>}
           </form>
         </div>

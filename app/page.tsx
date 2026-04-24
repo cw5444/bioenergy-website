@@ -68,7 +68,7 @@ export default function Home() {
               href="#contact"
               className="bg-green-600 hover:bg-green-500 text-white px-12 py-5 rounded-full text-xl font-bold transition-all shadow-[0_0_30px_rgba(34,197,94,0.4)]"
             >
-              상담 문의하기
+              문의하기
             </Link>
             <Link
               href="#timeline"
@@ -135,7 +135,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ==================== 3️⃣ Research Status (모달 기능 적용) ==================== */}
+      {/* ==================== 3️⃣ Research Status ==================== */}
       <section id="status" className="py-24 bg-white scroll-mt-24">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
@@ -195,10 +195,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 이미지 확대 모달 (Overlay) */}
+      {/* 이미지 확대 모달 (배경: 짙은 회색 + 블러 적용) */}
       {selectedImg && (
         <div 
-          className="fixed inset-0 z-[1000] bg-black/90 flex items-center justify-center p-4 cursor-zoom-out"
+          className="fixed inset-0 z-[1000] bg-slate-900/90 backdrop-blur-sm flex items-center justify-center p-4 cursor-zoom-out"
           onClick={() => setSelectedImg(null)}
         >
           <div className="relative w-full max-w-5xl h-full max-h-[85vh]">
@@ -216,9 +216,18 @@ export default function Home() {
         </div>
       )}
 
-      {/* ==================== 4️⃣ Contact ==================== */}
-      <section id="contact" className="py-24 bg-slate-950 scroll-mt-24">
-        <div className="max-w-4xl mx-auto px-4">
+      {/* ==================== 4️⃣ Inquiry (문의하기 섹션으로 개선) ==================== */}
+      <section id="contact" className="py-24 bg-slate-50 scroll-mt-24">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight">
+              Inquiry
+            </h2>
+            <h3 className="text-4xl font-extrabold text-slate-900">
+              문의하기
+            </h3>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
@@ -231,7 +240,7 @@ export default function Home() {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-5 py-4 rounded-xl bg-slate-50 border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900"
+                  className="w-full px-5 py-4 rounded-xl bg-white border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900"
                   placeholder="성함 또는 기관명"
                 />
               </div>
@@ -245,7 +254,7 @@ export default function Home() {
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-5 py-4 rounded-xl bg-slate-50 border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900"
+                  className="w-full px-5 py-4 rounded-xl bg-white border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900"
                   placeholder="example@domain.com"
                 />
               </div>
@@ -261,7 +270,7 @@ export default function Home() {
                 rows={5}
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                className="w-full px-5 py-4 rounded-xl bg-slate-50 border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900"
+                className="w-full px-5 py-4 rounded-xl bg-white border border-slate-200 focus:border-green-500 outline-none transition-all text-slate-900"
                 placeholder="문의 내용을 입력해 주세요."
               />
             </div>
@@ -270,7 +279,7 @@ export default function Home() {
               className="w-full bg-green-600 hover:bg-green-700 text-white py-5 rounded-xl text-xl font-bold transition-all shadow-lg"
               type="submit"
             >
-              {status === "sending" ? "전송 중..." : "인증된 메시지 보내기"}
+              {status === "sending" ? "전송 중..." : "문의 메시지 보내기"}
             </button>
 
             {status === "success" && (

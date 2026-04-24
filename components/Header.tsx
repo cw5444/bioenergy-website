@@ -4,15 +4,25 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function Header() {
+  // 최상단으로 이동하는 함수
+  const scrollToTop = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <header className="fixed top-0 w-full z-[100] bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
       <nav className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-        {/* 좌측: 셀테바 + 전남대 로고 */}
+        {/* 좌측: Celltebah + 전남대 로고 */}
         <div className="flex items-center gap-4">
-          <Link href="/" className="flex flex-col leading-tight">
-            {/* ← 여기의 “셀테바” 텍스트는 그대로 유지합니다 */}
+          <Link 
+            href="/" 
+            onClick={scrollToTop}
+            className="flex flex-col leading-tight"
+          >
+            {/* 한글 "셀테바" 대신 영문 "Celltebah" 적용 */}
             <span className="text-2xl font-black tracking-tighter text-slate-900">
-              셀테바
+              Celltebah
             </span>
             <span className="text-[10px] text-green-700 font-bold uppercase tracking-widest">
               Bioenergy Research Center
@@ -37,7 +47,7 @@ export default function Header() {
           </a>
         </div>
 
-        {/* 우측: 메뉴 – 페이지 섹션 ID와 정확히 매핑 */}
+        {/* 우측: 메뉴 – 원래 코드 유지 */}
         <div className="flex items-center gap-8">
           <div className="hidden md:flex space-x-8 text-[15px] font-bold text-slate-600">
             <Link href="#intro" className="hover:text-green-600 transition-colors">

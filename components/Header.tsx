@@ -47,7 +47,7 @@ export default function Header() {
           </a>
         </div>
 
-        {/* 우측: 메뉴 – 원래 코드 유지 */}
+        {/* 우측: 메뉴 */}
         <div className="flex items-center gap-8">
           <div className="hidden md:flex space-x-8 text-[15px] font-bold text-slate-600">
             <Link href="#intro" className="hover:text-green-600 transition-colors">
@@ -65,7 +65,7 @@ export default function Header() {
             href="#contact"
             className="bg-green-600 text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-green-500 transition-all shadow-md"
           >
-            상담하기
+            문의하기
           </Link>
         </div>
       </nav>

@@ -195,13 +195,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 이미지 확대 모달 (배경: 짙은 회색 + 블러 적용) */}
+      {/* 이미지 확대 모달 (배경: 흐릿한 유리 효과 적용) */}
       {selectedImg && (
         <div 
-          className="fixed inset-0 z-[1000] bg-slate-900/90 backdrop-blur-sm flex items-center justify-center p-4 cursor-zoom-out"
+          className="fixed inset-0 z-[1000] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 cursor-zoom-out"
           onClick={() => setSelectedImg(null)}
         >
-          <div className="relative w-full max-w-5xl h-full max-h-[85vh]">
+          <div className="relative w-full max-w-5xl h-full max-h-[85vh] drop-shadow-2xl">
             <Image
               src={selectedImg}
               alt="Full view"
@@ -210,13 +210,13 @@ export default function Home() {
               unoptimized
             />
           </div>
-          <button className="absolute top-8 right-8 text-white text-4xl font-light hover:text-green-500 transition-colors">
+          <button className="absolute top-8 right-8 text-white bg-slate-800/50 hover:bg-slate-700 w-12 h-12 rounded-full flex items-center justify-center text-3xl font-light transition-all">
             &times;
           </button>
         </div>
       )}
 
-      {/* ==================== 4️⃣ Inquiry (문의하기 섹션으로 개선) ==================== */}
+      {/* ==================== 4️⃣ Inquiry ==================== */}
       <section id="contact" className="py-24 bg-slate-50 scroll-mt-24">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-16">

@@ -363,7 +363,7 @@ export default function Home() {
 
       <footer className="py-12 bg-slate-900 border-t border-slate-800 text-center">
         <p className="text-slate-500 text-sm font-medium">
-          © 2026 Celltebah Bioenergy Research Center. Chonnam National University.
+          © 2026 Celltebah Bioenergy Research Center. Chonnam National University. All rights reserved.
         </p>
       </footer>
     </main>

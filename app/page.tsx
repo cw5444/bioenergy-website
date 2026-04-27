@@ -150,7 +150,6 @@ export default function Home() {
             ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}
           `}
           onClick={() => setIsMenuOpen(false)}
-          onTouchStart={() => setIsMenuOpen(false)}
         >
           <div
             ref={menuRef}
@@ -161,7 +160,6 @@ export default function Home() {
               p-8 flex flex-col pt-32
             `}
             onClick={(e) => e.stopPropagation()}
-            onTouchStart={(e) => e.stopPropagation()}
           >
             <Link href="#intro" className="text-xl font-bold text-slate-200 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>
               연구소 소개
@@ -361,6 +359,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* FOOTER */}
       <footer className="py-12 bg-slate-900 border-t border-slate-800 text-center">
         <p className="text-slate-500 text-sm font-medium">
           © 2026 Celltebah Bioenergy Research Center. Chonnam National University. All rights reserved.

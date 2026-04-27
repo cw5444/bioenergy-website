@@ -4,17 +4,54 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 
+// 구글 번역 API 타입 선언
+declare global {
+  interface Window {
+    google: any;
+    googleTranslateElementInit: () => void;
+  }
+}
+
 export default function Home() {
   /* ---------- 상태 관리 ---------- */
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState("");
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [selectedLang, setSelectedLang] = useState<"ko" | "en" | "etc">("ko"); // ← 언어 상태
+  const [currentLang, setCurrentLang] = useState<"ko" | "en">("ko");
 
-  // 외부 클릭/터치용 레퍼런스
   const menuRef = useRef<HTMLDivElement | null>(null);
   const hamburgerRef = useRef<HTMLButtonElement | null>(null);
+
+  /* ---------- 구글 번역 엔진 초기화 ---------- */
+  useEffect(() => {
+    // 구글 번역 스크립트 삽입
+    const addScript = document.createElement("script");
+    addScript.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    addScript.async = true;
+    document.body.appendChild(addScript);
+
+    window.googleTranslateElementInit = () => {
+      new window.google.translate.TranslateElement(
+        {
+          pageLanguage: "ko",
+          includedLanguages: "en,ko,ja,zh-CN,es,fr,de",
+          autoDisplay: false,
+        },
+        "google_translate_element"
+      );
+    };
+  }, []);
+
+  // 번역 실행 함수
+  const handleTranslate = (langCode: "ko" | "en") => {
+    const selectEl = document.querySelector(".goog-te-combo") as HTMLSelectElement;
+    if (selectEl) {
+      selectEl.value = langCode === "ko" ? "" : "en"; // 구글은 원본언어로 갈 때 빈값을 사용하기도 함
+      selectEl.dispatchEvent(new Event("change"));
+      setCurrentLang(langCode);
+    }
+  };
 
   /* ---------- 외부 클릭/터치 시 메뉴 닫기 ---------- */
   useEffect(() => {
@@ -34,9 +71,7 @@ export default function Home() {
   }, [isMenuOpen]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (isMenuOpen) setIsMenuOpen(false);
-    };
+    const handleScroll = () => { if (isMenuOpen) setIsMenuOpen(false); };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isMenuOpen]);
@@ -53,216 +88,84 @@ export default function Home() {
       if (response.ok) {
         setStatus("success");
         setFormData({ name: "", email: "", message: "" });
-      } else setStatus("error");
-    } catch (err) {
-      setStatus("error");
-    }
+      } else { setStatus("error"); }
+    } catch (err) { setStatus("error"); }
   };
 
   return (
     <main className="min-h-screen bg-white">
+      {/* 구글 번역기 숨김 자동 실행용 */}
+      <div id="google_translate_element" className="hidden"></div>
+
       {/* ==================== 0️⃣ Header ==================== */}
       <header className="fixed top-0 w-full z-[100] bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
         <nav className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-          {/* 로고와 언어 선택 */}
           <div className="flex items-center gap-4">
-            {/* 브랜드 로고 */}
-            <Link
-              href="/"
-              className="flex flex-col leading-tight"
-              onClick={() => {
-                window.scrollTo({ top: 0, behavior: "smooth" });
-                setIsMenuOpen(false);
-              }}
-            >
-              <span className="text-2xl font-black tracking-tighter text-slate-900">
-                Celltebah
-              </span>
-              <span className="text-[10px] text-green-700 font-bold uppercase tracking-widest">
-                Bioenergy Research Center
-              </span>
+            <Link href="/" className="flex flex-col leading-tight" onClick={() => {window.scrollTo({top:0, behavior:'smooth'}); setIsMenuOpen(false);}}>
+              <span className="text-2xl font-black tracking-tighter text-slate-900">Celltebah</span>
+              <span className="text-[10px] text-green-700 font-bold uppercase tracking-widest">Bioenergy Research Center</span>
             </Link>
-
-            {/* 전남대 로고 */}
             <div className="h-8 w-[1px] bg-slate-200 mx-1 hidden sm:block" />
-            <a
-              href="https://www.jnu.ac.kr"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative h-7 w-32 hidden sm:block"
-            >
-              <Image
-                src="/images/jnu-logo.svg"
-                alt="전남대학교"
-                fill
-                className="object-contain opacity-80"
-                unoptimized
-              />
+            <a href="https://www.jnu.ac.kr" target="_blank" rel="noopener noreferrer" className="relative h-7 w-32 hidden sm:block">
+              <Image src="/images/jnu-logo.svg" alt="전남대학교" fill className="object-contain opacity-80" unoptimized />
             </a>
-
-            {/* ── 언어 선택 버튼 그룹 ── */}
-            <div className="flex gap-1.5 ml-2 hidden sm:flex">
-              <button
-                type="button"
-                onClick={() => setSelectedLang("ko")}
-                className={`
-                  px-3 py-1 text-sm rounded-md
-                  bg-slate-800/60 backdrop-blur-sm
-                  ${
-                    selectedLang === "ko"
-                      ? "text-white bg-green-600/80"
-                      : "text-slate-300 hover:text-white"
-                  }
-                `}
-              >
-                한국어
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelectedLang("en")}
-                className={`
-                  px-3 py-1 text-sm rounded-md
-                  bg-slate-800/60 backdrop-blur-sm
-                  ${
-                    selectedLang === "en"
-                      ? "text-white bg-green-600/80"
-                      : "text-slate-300 hover:text-white"
-                  }
-                `}
-              >
-                English
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelectedLang("etc")}
-                className={`
-                  px-3 py-1 text-sm rounded-md
-                  bg-slate-800/60 backdrop-blur-sm
-                  ${
-                    selectedLang === "etc"
-                      ? "text-white bg-green-600/80"
-                      : "text-slate-300 hover:text-white"
-                  }
-                `}
-              >
-                기타
-              </button>
-            </div>
           </div>
 
-          {/* 데스크탑 내비게이션 */}
           <div className="hidden md:flex items-center gap-8 text-[15px] font-bold text-slate-600">
-            <Link href="#intro" className="hover:text-green-600 transition-colors">
-              연구소 소개
-            </Link>
-            <Link href="#timeline" className="hover:text-green-600 transition-colors">
-              연혁
-            </Link>
-            <Link href="#status" className="hover:text-green-600 transition-colors">
-              연구 현황
-            </Link>
-            <Link href="#product" className="hover:text-green-600 transition-colors">
-              주요 제품
-            </Link>
-            <Link
-              href="#contact"
-              className="bg-green-600 text-white px-6 py-2.5 rounded-full hover:bg-green-500 transition-all shadow-md"
-            >
-              문의하기
-            </Link>
+            <Link href="#intro" className="hover:text-green-600 transition-colors">연구소 소개</Link>
+            <Link href="#timeline" className="hover:text-green-600 transition-colors">연혁</Link>
+            <Link href="#status" className="hover:text-green-600 transition-colors">연구 현황</Link>
+            <Link href="#product" className="hover:text-green-600 transition-colors">주요 제품</Link>
+            <Link href="#contact" className="bg-green-600 text-white px-6 py-2.5 rounded-full hover:bg-green-500 transition-all shadow-md">문의하기</Link>
           </div>
 
-          {/* 모바일 햄버거 버튼 */}
-          <button
-            ref={hamburgerRef}
-            className="md:hidden flex flex-col gap-1.5 z-[110]"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            <div
-              className={`w-6 h-0.5 bg-slate-900 transition-all ${
-                isMenuOpen ? "rotate-45 translate-y-2 !bg-white" : ""
-              }`}
-            />
+          <button ref={hamburgerRef} className="md:hidden flex flex-col gap-1.5 z-[110]" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <div className={`w-6 h-0.5 bg-slate-900 transition-all ${isMenuOpen ? "rotate-45 translate-y-2 !bg-white" : ""}`} />
             <div className={`w-6 h-0.5 bg-slate-900 ${isMenuOpen ? "opacity-0" : ""}`} />
-            <div
-              className={`w-6 h-0.5 bg-slate-900 transition-all ${
-                isMenuOpen ? "-rotate-45 -translate-y-2 !bg-white" : ""
-              }`}
-            />
+            <div className={`w-6 h-0.5 bg-slate-900 transition-all ${isMenuOpen ? "-rotate-45 -translate-y-2 !bg-white" : ""}`} />
           </button>
         </nav>
-
-        {/* 모바일 메뉴 오버레이 */}
-        <div
-          className={`
-            fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[100]
-            transition-opacity duration-300
-            ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}
-          `}
-          onClick={() => setIsMenuOpen(false)}
-          onTouchStart={() => setIsMenuOpen(false)}
-        >
-          <div
-            ref={menuRef}
-            className={`
-              absolute right-0 top-0 h-screen w-[270px] bg-slate-900/95
-              shadow-2xl transition-transform duration-300
-              transform ${isMenuOpen ? "translate-x-0" : "translate-x-full"}
-              p-8 flex flex-col pt-32
-            `}
-            onClick={(e) => e.stopPropagation()}
-            onTouchStart={(e) => e.stopPropagation()}
-          >
-            <Link href="#intro" className="text-xl font-bold text-slate-200 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>
-              연구소 소개
-            </Link>
-            <Link href="#timeline" className="text-xl font-bold text-slate-200 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>
-              연혁
-            </Link>
-            <Link href="#status" className="text-xl font-bold text-slate-200 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>
-              연구 현황
-            </Link>
-            <Link href="#product" className="text-xl font-bold text-slate-200 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>
-              주요 제품
-            </Link>
-            <Link href="#contact" className="text-2xl font-bold text-green-400 pt-4" onClick={() => setIsMenuOpen(false)}>
-              문의하기
-            </Link>
-          </div>
-        </div>
       </header>
 
+      {/* ─── 언어 선택 플로팅 바 (헤더 아래 우측) ─── */}
+      <div className="fixed top-24 right-6 z-[90] flex items-center gap-1 bg-white/90 backdrop-blur-md p-1.5 rounded-2xl shadow-xl border border-slate-200">
+        {currentLang === "en" && (
+          <button onClick={() => handleTranslate("ko")} className="flex items-center gap-2 px-3 py-1.5 hover:bg-slate-100 rounded-xl transition-all">
+            <span className="text-lg">🇰🇷</span>
+            <span className="text-xs font-bold text-slate-700">KR</span>
+          </button>
+        )}
+        {currentLang === "ko" && (
+          <button onClick={() => handleTranslate("en")} className="flex items-center gap-2 px-3 py-1.5 hover:bg-slate-100 rounded-xl transition-all">
+            <span className="text-lg">🇺🇸</span>
+            <span className="text-xs font-bold text-slate-700">EN</span>
+          </button>
+        )}
+        <div className="w-[1px] h-4 bg-slate-200 mx-1" />
+        <button onClick={() => {(document.querySelector(".goog-te-menu-value") as HTMLElement)?.click()}} className="flex items-center gap-2 px-3 py-1.5 hover:bg-slate-100 rounded-xl transition-all">
+          <span className="text-lg">🌐</span>
+          <span className="text-xs font-bold text-slate-700">ETC</span>
+        </button>
+      </div>
+
       {/* ==================== 1️⃣ Hero ==================== */}
-      <section
-        id="intro"
-        className="relative h-[85vh] flex items-center justify-center bg-slate-900 overflow-hidden pt-12 scroll-mt-20"
-      >
+      <section id="intro" className="relative h-[85vh] flex items-center justify-center bg-slate-900 overflow-hidden pt-12 scroll-mt-20">
         <div className="absolute inset-0 opacity-70 bg-gradient-to-br from-green-600 via-emerald-800 to-slate-950" />
         <div className="relative z-10 text-center px-4 max-w-5xl">
           <div className="inline-block px-4 py-1.5 mb-6 border border-green-400/30 rounded-full bg-green-500/10 backdrop-blur-sm">
-            <span className="text-green-300 font-bold tracking-widest uppercase text-xs">
-              Sustainable Future
-            </span>
+            <span className="text-green-300 font-bold tracking-widest uppercase text-xs">Sustainable Future</span>
           </div>
           <h1 className="text-4xl md:text-7xl font-black text-white mb-8 leading-[1.2] tracking-tight">
-            탄소중립의 해답,
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-300 via-emerald-400 to-green-300">
-              바이오에너지가 미래입니다
-            </span>
+            탄소중립의 해답,<br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-300 via-emerald-400 to-green-300">바이오에너지가 미래입니다</span>
           </h1>
           <p className="text-lg md:text-2xl text-slate-200 mb-12 leading-relaxed max-w-3xl mx-auto font-medium">
-            바이오에너지는 화석연료를 대체하는 가장 현실적인 대안입니다.
-            <br className="hidden md:block" />
+            바이오에너지는 화석연료를 대체하는 가장 현실적인 대안입니다.<br className="hidden md:block" />
             우리 연구소는 지속 가능한 에너지와 고부가가치 소재 생태계를 연구합니다.
           </p>
           <div className="flex flex-col sm:flex-row gap-5 justify-center">
-            <Link href="#status" className="bg-green-600 hover:bg-green-500 text-white px-12 py-5 rounded-full text-xl font-bold transition-all shadow-lg">
-              연구 현황
-            </Link>
-            <Link href="#product" className="bg-white/10 hover:bg-white/20 text-white border border-white/30 backdrop-blur-md px-12 py-5 rounded-full text-xl font-bold transition-all">
-              주요 제품
-            </Link>
+            <Link href="#status" className="bg-green-600 hover:bg-green-500 text-white px-12 py-5 rounded-full text-xl font-bold transition-all shadow-lg">연구 현황</Link>
+            <Link href="#product" className="bg-white/10 hover:bg-white/20 text-white border border-white/30 backdrop-blur-md px-12 py-5 rounded-full text-xl font-bold transition-all">주요 제품</Link>
           </div>
         </div>
       </section>
@@ -297,9 +200,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight">Research Status</h2>
-            <h3 className="text-4xl font-extrabold text-slate-900 border-b-4 border-green-600 inline-block pb-2">
-              연구 현황
-            </h3>
+            <h3 className="text-4xl font-extrabold text-slate-900 border-b-4 border-green-600 inline-block pb-2">연구 현황</h3>
           </div>
           <div className="grid md:grid-cols-3 gap-10">
             {[
@@ -307,11 +208,7 @@ export default function Home() {
               { title: "High‑Activity Enzymes", desc: "바이오매스 분해 효율 극대화를 위한 고활성 효소 칵테일 개발", img: "/images/enzyme-edited.jpg" },
               { title: "Functional Materials", desc: "바이오 공정 부산물을 활용한 고부가가치 기능성 소재 추출", img: "/images/functional-edited.jpg" },
             ].map((item, idx) => (
-              <div
-                key={idx}
-                className="group relative bg-slate-900 rounded-[2rem] overflow-hidden shadow-2xl transition-all duration-500 border border-slate-100 cursor-pointer"
-                onClick={() => setSelectedImg(item.img)}
-              >
+              <div key={idx} className="group relative bg-slate-900 rounded-[2rem] overflow-hidden shadow-2xl transition-all duration-500 border border-slate-100 cursor-pointer" onClick={() => setSelectedImg(item.img)}>
                 <div className="relative h-[400px] w-full overflow-hidden">
                   <Image src={item.img} alt={item.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" unoptimized />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent opacity-90" />
@@ -339,7 +236,7 @@ export default function Home() {
             {[
               { name: "MOS", desc: "면역력 강화 및 장내 환경 개선에 탁월한 프리바이오틱스 소재입니다." },
               { name: "XOS", desc: "자일로올리고당 기반의 고부가가치 천연 소재로 활용도가 높습니다." },
-              { name: "COS", desc: "생산 난도가 매우 높은 키토올리고당을 독자 기술로 맞춤 제작합니다." },
+              { name: "COS", desc: "생산 난도가 매우 높은 키토올리고당을 독자 기술로 맞춤 제작합니다." }
             ].map((p, idx) => (
               <div key={idx} className="bg-white p-10 rounded-3xl shadow-sm border border-slate-100 hover:shadow-lg transition-all border-b-4 hover:border-green-500">
                 <div className="text-4xl font-black text-green-600 mb-4">{p.name}</div>
@@ -352,16 +249,11 @@ export default function Home() {
 
       {/* 이미지 확대 모달 */}
       {selectedImg && (
-        <div
-          className="fixed inset-0 z-[1000] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 cursor-zoom-out"
-          onClick={() => setSelectedImg(null)}
-        >
+        <div className="fixed inset-0 z-[1000] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 cursor-zoom-out" onClick={() => setSelectedImg(null)}>
           <div className="relative w-full max-w-5xl h-full max-h-[85vh] drop-shadow-2xl">
             <Image src={selectedImg} alt="Full view" fill className="object-contain" unoptimized />
           </div>
-          <button className="absolute top-8 right-8 text-white bg-slate-800/50 w-12 h-12 rounded-full flex items-center justify-center text-3xl font-light hover:bg-slate-700 transition-all">
-            &times;
-          </button>
+          <button className="absolute top-8 right-8 text-white bg-slate-800/50 w-12 h-12 rounded-full flex items-center justify-center text-3xl font-light hover:bg-slate-700 transition-all">&times;</button>
         </div>
       )}
 
@@ -374,35 +266,11 @@ export default function Home() {
           </div>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
-              <input
-                type="text"
-                placeholder="성함 또는 기관명"
-                required
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-6 py-4 rounded-xl border border-slate-200 outline-none focus:border-green-500 transition-all text-slate-900 bg-slate-50/50"
-              />
-              <input
-                type="email"
-                placeholder="이메일 주소"
-                required
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-6 py-4 rounded-xl border border-slate-200 outline-none focus:border-green-500 transition-all text-slate-900 bg-slate-50/50"
-              />
+              <input type="text" placeholder="성함 또는 기관명" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full px-6 py-4 rounded-xl border border-slate-200 outline-none focus:border-green-500 transition-all text-slate-900 bg-slate-50/50" />
+              <input type="email" placeholder="이메일 주소" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full px-6 py-4 rounded-xl border border-slate-200 outline-none focus:border-green-500 transition-all text-slate-900 bg-slate-50/50" />
             </div>
-            <textarea
-              rows={5}
-              placeholder="문의 내용을 입력해 주세요."
-              required
-              value={formData.message}
-              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-              className="w-full px-6 py-4 rounded-xl border border-slate-200 outline-none focus:border-green-500 transition-all text-slate-900 bg-slate-50/50"
-            />
-            <button
-              className="w-full bg-green-600 hover:bg-green-700 text-white py-5 rounded-xl text-xl font-bold transition-all shadow-lg active:scale-95"
-              type="submit"
-            >
+            <textarea rows={5} placeholder="문의 내용을 입력해 주세요." required value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full px-6 py-4 rounded-xl border border-slate-200 outline-none focus:border-green-500 transition-all text-slate-900 bg-slate-50/50" />
+            <button className="w-full bg-green-600 hover:bg-green-700 text-white py-5 rounded-xl text-xl font-bold transition-all shadow-lg active:scale-95" type="submit">
               {status === "sending" ? "전송 중..." : "문의 메시지 보내기"}
             </button>
             {status === "success" && <p className="text-center text-green-600 font-black">정상적으로 전송되었습니다.</p>}
@@ -411,11 +279,27 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 모바일 메뉴 오버레이 */}
+      <div className={`fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[100] transition-opacity duration-300 ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`} onClick={() => setIsMenuOpen(false)}>
+        <div ref={menuRef} className={`absolute right-0 top-0 h-screen w-[270px] bg-slate-900/95 transition-transform duration-300 transform ${isMenuOpen ? "translate-x-0" : "translate-x-full"} p-8 flex flex-col pt-32`} onClick={(e) => e.stopPropagation()}>
+          <Link href="#intro" className="text-xl font-bold text-slate-200 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>연구소 소개</Link>
+          <Link href="#timeline" className="text-xl font-bold text-slate-200 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>연혁</Link>
+          <Link href="#status" className="text-xl font-bold text-slate-200 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>연구 현황</Link>
+          <Link href="#product" className="text-xl font-bold text-slate-200 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>주요 제품</Link>
+          <Link href="#contact" className="text-2xl font-bold text-green-400 pt-4" onClick={() => setIsMenuOpen(false)}>문의하기</Link>
+        </div>
+      </div>
+
       <footer className="py-12 bg-slate-900 border-t border-slate-800 text-center">
-        <p className="text-slate-500 text-sm font-medium">
-          © 2026 Celltebah Bioenergy Research Center. Chonnam National University.
-        </p>
+        <p className="text-slate-500 text-sm font-medium">© 2026 Celltebah Bioenergy Research Center. Chonnam National University.</p>
       </footer>
+
+      {/* 구글 번역 지저분한 툴바 숨기기 */}
+      <style jsx global>{`
+        .goog-te-banner-frame { display: none !important; }
+        body { top: 0 !important; }
+        .goog-te-balloon-frame { display: none !important; }
+      `}</style>
     </main>
   );
 }

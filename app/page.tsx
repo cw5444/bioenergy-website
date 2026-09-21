@@ -10,6 +10,7 @@ export default function Home() {
   const [status, setStatus] = useState("");
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeCat, setActiveCat] = useState("all");
 
   // 외부 클릭/터치용 레퍼런스
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -57,6 +58,56 @@ export default function Home() {
       setStatus("error");
     }
   };
+
+  const products = [
+    // Enzyme Production
+    { id: "enz01", cat: "enzyme", name: "Cellulase", src: "Woody biomass, Agricultural waste, Textile waste", desc: "Industrial/Food Grade 효소 생산 라인. 다당류 분해 목적." },
+    { id: "enz02", cat: "enzyme", name: "Pectinase", src: "Fruit/vegetable wastes, Onion, Cruciferous vegetable", desc: "펙틴 분해 효소 생산. 바이오슈가/정제 공정 연계 가능." },
+    // Biosugar
+    { id: "bio01", cat: "biosugar", name: "Mannose", src: "Onion, Cruciferous vegetable, Bamboo", desc: "효소 전환/당화 기반 단당류 라인." },
+    { id: "bio02", cat: "biosugar", name: "Xylose", src: "Bamboo, Rice husk, Rice straw, Hardwoods, Softwoods", desc: "목질계/농산계 바이오매스 유래 당." },
+    { id: "bio03", cat: "biosugar", name: "Glucose", src: "Onion, Bamboo, Rice husk, Rice straw, Paper, Textile waste, Woods, Agricultural waste", desc: "C6 당, 바이오에탄올/플랫폼 케미컬 전구체." },
+    { id: "bio04", cat: "biosugar", name: "Fructose", src: "Onion, Mandarin, Cruciferous vegetable wastes", desc: "과당류, 식품/원료용 검토 가능." },
+    { id: "bio05", cat: "biosugar", name: "Biosugar (혼합 당)", src: "Mannose, Xylose, Glucose, Fructose 조합", desc: "원료 소스에 따라 당 조성이 달라지는 당화 산물." },
+    // Bioethanol
+    { id: "bioeth01", cat: "bioethanol", name: "Bioethanol", src: "Onion, Bamboo, Rice husk, Rice straw, Papers, Textile waste, Woods, Agricultural waste", desc: "다당류 당화 후 발효 기반 바이오연료 라인." },
+    // Rare sugars
+    { id: "rare01", cat: "raresugar", name: "Allulose / Psicose", src: "Rice straw, Rice husk, Cruciferous vegetable wastes", desc: "희귀당 라인. 저칼로리 당 대체 검토." },
+    { id: "rare02", cat: "raresugar", name: "Tagatose", src: "Agar", desc: "희귀당, Agar 유래 연계 검토." },
+    { id: "rare03", cat: "raresugar", name: "Xylulose", src: "Bamboo", desc: "희귀당, 대나무계 원료 연계." },
+    // Oligosaccharide (Prebiotics)
+    { id: "oligo01", cat: "oligo", name: "Manno-oligosaccharide (MOS)", src: "Locust bean Gum, Guar Gum, Konjac", desc: "프리바이오틱스/올리고당 계열 제품." },
+    { id: "oligo02", cat: "oligo", name: "Xylo-oligosaccharide (XOS)", src: "Bamboo, Rice husk", desc: "목질계/농산계 유래 자일로올리고당 라인." },
+    { id: "oligo03", cat: "oligo", name: "Chito-oligosaccharide (COS)", src: "Chitin/Chitosan 계열 원료", desc: "올리고당/기능성 소재 검토용." },
+    // Platform chemicals
+    { id: "plat01", cat: "platform", name: "Lactic acid", src: "Textile waste, Onion, Bamboo, Rice husk, Rice straw, Paper, Agricultural waste", desc: "플랫폼 케미컬, 생분해/발효 연계 원료." },
+    { id: "plat02", cat: "platform", name: "Polyol – Sorbitol", src: "Onion", desc: "당 알코올 계열, Onion 연계 가능." },
+    { id: "plat03", cat: "platform", name: "Polyol – Xylitol", src: "Bamboo", desc: "당 알코올 계열, Bamboo 연계 가능." },
+    { id: "plat04", cat: "platform", name: "HMF", src: "Cellulose/Hemicellulose 유래 당, Bamboo, Rice husk, Rice straw 등", desc: "화학 전환 중간체, 플랫폼 화합물." },
+    // Bioactive compounds
+    { id: "bioact01", cat: "bioactive", name: "Quercetin", src: "Onion, Cruciferous vegetable", desc: "플라보노이드계 바이오액티브." },
+    { id: "bioact02", cat: "bioactive", name: "Concanavalin A (ConA)", src: "종자/콩과 유래 단백질 계열 검토", desc: "렉틴 계열 바이오액티브." },
+    { id: "bioact03", cat: "bioactive", name: "Hesperidin", src: "Mandarin, Citrus 계열", desc: "플라바논 배당체 계열." },
+    // ETC
+    { id: "etc01", cat: "etc", name: "Bio-Pack", src: "제품 패키징/패키지 제안 라인", desc: "바이오 제품 연계 포장/패키지 구성 검토." },
+  ];
+
+  const filteredProducts =
+    activeCat === "all"
+      ? products
+      : products.filter((p) => p.cat === activeCat);
+
+  const categories = [
+    { key: "all", label: "전체" },
+    { key: "enzyme", label: "Enzyme Production" },
+    { key: "biosugar", label: "Biosugar" },
+    { key: "bioethanol", label: "Biofuel / Bioethanol" },
+    { key: "raresugar", label: "Rare Sugars" },
+    { key: "oligo", label: "Oligosaccharide (Prebiotics)" },
+    { key: "platform", label: "Platform Chemicals" },
+    { key: "bioactive", label: "Bioactive Compounds" },
+    { key: "etc", label: "ETC" },
+  ];
 
   return (
     <main className="min-h-screen bg-white">
@@ -275,25 +326,72 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ==================== 4️⃣ Product ==================== */}
+      {/* ==================== 4️⃣ Product (교체됨) ==================== */}
       <section id="product" className="py-24 bg-slate-50 scroll-mt-20">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight">Main Business</h2>
-          <h3 className="text-4xl font-extrabold text-slate-900 mb-8">주요 제품 및 사업</h3>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto mb-16 leading-relaxed">
-            일반적으로 생산이 어렵거나 고가인 <span className="text-green-700 font-bold underline">MOS, XOS, COS</span> 등의 기능성 소재를 바이오매스를 활용하여 <span className="text-slate-900 font-bold uppercase">소량 주문 생산 및 판매</span>를 진행하고 있습니다.
-          </p>
-          <div className="grid md:grid-cols-3 gap-8 text-left">
-            {[
-              { name: "MOS", desc: "면역력 강화 및 장내 환경 개선에 탁월한 프리바이오틱스 소재입니다." },
-              { name: "XOS", desc: "자일로올리고당 기반의 고부가가치 천연 소재로 활용도가 높습니다." },
-              { name: "COS", desc: "생산 난도가 매우 높은 키토올리고당을 독자 기술로 맞춤 제작합니다." },
-            ].map((p, idx) => (
-              <div key={idx} className="bg-white p-10 rounded-3xl shadow-sm border border-slate-100 hover:shadow-lg transition-all border-b-4 hover:border-green-500">
-                <div className="text-4xl font-black text-green-600 mb-4">{p.name}</div>
-                <p className="text-slate-600 font-medium">{p.desc}</p>
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-14">
+            <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight">Main Business</h2>
+            <h3 className="text-4xl font-extrabold text-slate-900 mb-4">주요 제품 및 사업</h3>
+            <p className="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+              현재 선별된 In-house 효소 생산부터 바이오슈가, 바이오에탄올, 희귀당, 프리바이오틱스 올리고당,
+              플랫폼 케미컬, 바이오액티브 소재까지 7개 분류 31종을 구성해 둡니다.
+            </p>
+          </div>
+
+          {/* 분류 필터 */}
+          <div className="flex flex-wrap justify-center gap-3 mb-12">
+            {categories.map((cat) => (
+              <button
+                key={cat.key}
+                className={`
+                  px-5 py-2 rounded-full text-sm font-semibold border transition-all
+                  ${activeCat === cat.key
+                    ? "bg-green-600 text-white border-green-600"
+                    : "bg-white text-slate-700 border-slate-200 hover:border-green-400"
+                  }
+                `}
+                onClick={() => setActiveCat(cat.key)}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+
+          {/* 제품 그리드 */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProducts.map((p) => (
+              <div
+                key={p.id}
+                className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-lg hover:border-green-400 transition-all"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <span className="text-[11px] font-bold uppercase tracking-widest text-green-700 bg-green-50 px-3 py-1 rounded-full border border-green-200">
+                    {p.cat}
+                  </span>
+                  <Link
+                    href={`/product/${p.id}`}
+                    className="text-xs text-green-700 font-semibold hover:underline"
+                  >
+                    상세 보기
+                  </Link>
+                </div>
+                <h4 className="text-lg font-bold text-slate-900 mb-2">{p.name}</h4>
+                <p className="text-xs text-slate-500 mb-3 leading-relaxed">{p.src}</p>
+                <p className="text-sm text-slate-700 leading-relaxed">{p.desc}</p>
               </div>
             ))}
+          </div>
+
+          {filteredProducts.length === 0 && (
+            <div className="text-center py-16 text-slate-500">
+              해당 분류의 제품이 없습니다.
+            </div>
+          )}
+
+          <div className="mt-14 text-center text-sm text-slate-500 border-t border-slate-200 pt-10">
+            MOS / XOS / COS는 Oligosaccharide(Prebiotics)로 묶어 구성했습니다.
+            <br />
+            각 제품에는 주요 원료 소스와 용도 예시를 함께 표시해, 기존 구좌를 현재 선별 라인업으로 교체할 수 있도록 설계했습니다.
           </div>
         </div>
       </section>
@@ -353,8 +451,16 @@ export default function Home() {
             >
               {status === "sending" ? "전송 중..." : "문의 메시지 보내기"}
             </button>
-            {status === "success" && <p className="text-center text-green-600 font-black">정상적으로 전송되었습니다.</p>}
-            {status === "error" && <p className="text-center text-red-500 font-bold">오류가 발생했습니다.</p>}
+            {status === "success" && (
+              <p className="text-center text-green-600 font-black">
+                정상적으로 전송되었습니다.
+              </p>
+            )}
+            {status === "error" && (
+              <p className="text-center text-red-500 font-bold">
+                오류가 발생했습니다.
+              </p>
+            )}
           </form>
         </div>
       </section>

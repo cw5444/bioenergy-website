@@ -60,35 +60,27 @@ export default function Home() {
   };
 
   const products = [
-    // Enzyme Production
     { id: "enz01", cat: "enzyme", name: "Cellulase", src: "Woody biomass, Agricultural waste, Textile waste", desc: "Industrial/Food Grade 효소 생산 라인. 다당류 분해 목적." },
     { id: "enz02", cat: "enzyme", name: "Pectinase", src: "Fruit/vegetable wastes, Onion, Cruciferous vegetable", desc: "펙틴 분해 효소 생산. 바이오슈가/정제 공정 연계 가능." },
-    // Biosugar
     { id: "bio01", cat: "biosugar", name: "Mannose", src: "Onion, Cruciferous vegetable, Bamboo", desc: "효소 전환/당화 기반 단당류 라인." },
     { id: "bio02", cat: "biosugar", name: "Xylose", src: "Bamboo, Rice husk, Rice straw, Hardwoods, Softwoods", desc: "목질계/농산계 바이오매스 유래 당." },
     { id: "bio03", cat: "biosugar", name: "Glucose", src: "Onion, Bamboo, Rice husk, Rice straw, Paper, Textile waste, Woods, Agricultural waste", desc: "C6 당, 바이오에탄올/플랫폼 케미컬 전구체." },
     { id: "bio04", cat: "biosugar", name: "Fructose", src: "Onion, Mandarin, Cruciferous vegetable wastes", desc: "과당류, 식품/원료용 검토 가능." },
     { id: "bio05", cat: "biosugar", name: "Biosugar (혼합 당)", src: "Mannose, Xylose, Glucose, Fructose 조합", desc: "원료 소스에 따라 당 조성이 달라지는 당화 산물." },
-    // Bioethanol
     { id: "bioeth01", cat: "bioethanol", name: "Bioethanol", src: "Onion, Bamboo, Rice husk, Rice straw, Papers, Textile waste, Woods, Agricultural waste", desc: "다당류 당화 후 발효 기반 바이오연료 라인." },
-    // Rare sugars
     { id: "rare01", cat: "raresugar", name: "Allulose / Psicose", src: "Rice straw, Rice husk, Cruciferous vegetable wastes", desc: "희귀당 라인. 저칼로리 당 대체 검토." },
     { id: "rare02", cat: "raresugar", name: "Tagatose", src: "Agar", desc: "희귀당, Agar 유래 연계 검토." },
     { id: "rare03", cat: "raresugar", name: "Xylulose", src: "Bamboo", desc: "희귀당, 대나무계 원료 연계." },
-    // Oligosaccharide (Prebiotics)
     { id: "oligo01", cat: "oligo", name: "Manno-oligosaccharide (MOS)", src: "Locust bean Gum, Guar Gum, Konjac", desc: "프리바이오틱스/올리고당 계열 제품." },
     { id: "oligo02", cat: "oligo", name: "Xylo-oligosaccharide (XOS)", src: "Bamboo, Rice husk", desc: "목질계/농산계 유래 자일로올리고당 라인." },
     { id: "oligo03", cat: "oligo", name: "Chito-oligosaccharide (COS)", src: "Chitin/Chitosan 계열 원료", desc: "올리고당/기능성 소재 검토용." },
-    // Platform chemicals
     { id: "plat01", cat: "platform", name: "Lactic acid", src: "Textile waste, Onion, Bamboo, Rice husk, Rice straw, Paper, Agricultural waste", desc: "플랫폼 케미컬, 생분해/발효 연계 원료." },
     { id: "plat02", cat: "platform", name: "Polyol – Sorbitol", src: "Onion", desc: "당 알코올 계열, Onion 연계 가능." },
     { id: "plat03", cat: "platform", name: "Polyol – Xylitol", src: "Bamboo", desc: "당 알코올 계열, Bamboo 연계 가능." },
     { id: "plat04", cat: "platform", name: "HMF", src: "Cellulose/Hemicellulose 유래 당, Bamboo, Rice husk, Rice straw 등", desc: "화학 전환 중간체, 플랫폼 화합물." },
-    // Bioactive compounds
     { id: "bioact01", cat: "bioactive", name: "Quercetin", src: "Onion, Cruciferous vegetable", desc: "플라보노이드계 바이오액티브." },
     { id: "bioact02", cat: "bioactive", name: "Concanavalin A (ConA)", src: "종자/콩과 유래 단백질 계열 검토", desc: "렉틴 계열 바이오액티브." },
     { id: "bioact03", cat: "bioactive", name: "Hesperidin", src: "Mandarin, Citrus 계열", desc: "플라바논 배당체 계열." },
-    // ETC
     { id: "etc01", cat: "etc", name: "Bio-Pack", src: "제품 패키징/패키지 제안 라인", desc: "바이오 제품 연계 포장/패키지 구성 검토." },
   ];
 
@@ -109,6 +101,87 @@ export default function Home() {
     { key: "etc", label: "ETC" },
   ];
 
+  /* ===== 우간다 커피 기획 섹션: JSX 밖 선언 ===== */
+  const ugandaCards = [
+    {
+      title: "왜 우간다 커피인가",
+      body: (
+        <ul className="space-y-3 text-sm text-slate-600 leading-relaxed">
+          <li><span className="font-semibold text-slate-900">생산 잠재력</span> 우간다는 로부스타 중심 생산국으로, 등급별 물량 편차가 뚜렷해 전량 활용 구조와 연결하기 좋음.</li>
+          <li><span className="font-semibold text-slate-900">현지 파트너</span> 청년 일자리 창출을 목표로 하는 우간다 청년 리더와 협력 가능.</li>
+          <li><span className="font-semibold text-slate-900">가격 환경</span> 현재 글로벌 커피가격이 고점 대비 내려온 구간이라, 저등급 원두의 현지 가공·활용 실험을 시도하기엔 부담이 덜한 국면.</li>
+        </ul>
+      ),
+    },
+    {
+      title: "3가지 목표",
+      body: (
+        <ul className="space-y-4 text-sm text-slate-600 leading-relaxed">
+          <li>
+            <span className="font-semibold text-slate-900">1차: 우간다 청년 일자리</span>
+            수매, 선별, 1차 가공, 포장, 오일 추출 보조 등 단계에 현지 인력을 배치해 고용 창출.
+          </li>
+          <li>
+            <span className="font-semibold text-slate-900">2차: 유통 단축</span>
+            중간 유통 단계를 줄여 우간다에서 한국으로의 직공급 구조를 만듦. 마진이 여러 단계에 분산되는 구조를 줄이고, 현지와 한국이 직접 연결되는 방식.
+          </li>
+          <li>
+            <span className="font-semibold text-slate-900">3차: 원두 전량 활용</span>
+            음용 적합 원두는 로스팅·음용 커피로, 음용으로 쓰기 어려운 저등급 원두나 부산물은 오일 추출 후 에너지·산업 소재로 활용하는 구조 검토.
+          </li>
+        </ul>
+      ),
+    },
+    {
+      title: "제품·활용 구조",
+      body: (
+        <ul className="space-y-4 text-sm text-slate-600 leading-relaxed">
+          <li>
+            <span className="font-semibold text-slate-900">음용 커피 라인</span>
+            상위 등급 원두는 한국에서 로스팅·공급. B2B 카페 납품, 온라인 D2C, 브랜딩 스토리와 연결 가능.
+          </li>
+          <li>
+            <span className="font-semibold text-slate-900">오일·에너지 활용 라인</span>
+            저등급/불량 원두는 오일 추출 후 바이오디젤, 난방·보조연료, 연구용 시료, 산업 보조재 등 활용처를 함께 설계.
+          </li>
+          <li>
+            <span className="font-semibold text-slate-900">커피박/부산물 활용</span>
+            오일 추출 후 잔여물은 현지 연료, 퇴비, 추가 바이오매스 활용 등으로 연결해 “버리는 원두”를 줄이는 방향.
+          </li>
+        </ul>
+      ),
+    },
+    {
+      title: "현실적 접근: 파일럿 → 확대",
+      body: (
+        <ol className="space-y-3 text-sm text-slate-600 leading-relaxed">
+          <li>
+            <span className="font-semibold text-slate-900">1단계</span>
+            소량 생두/원두 직수입 + 한국 로스팅·소규모 판매로 소비자 반응 확인. 동시에 우간다에서 오일 추출 가능성과 품질 샘플 확보.
+          </li>
+          <li>
+            <span className="font-semibold text-slate-900">2단계</span>
+            반응이 확인되면 현지 가공·선별 역량 강화, 청년 고용 확대.
+          </li>
+          <li>
+            <span className="font-semibold text-slate-900">3단계</span>
+            오일 추출 라인 또는 커피박 활용 방안을 연구소 기술과 연결해 확장.
+          </li>
+        </ol>
+      ),
+    },
+    {
+      title: "핵심 포인트",
+      body: (
+        <ul className="space-y-3 text-sm text-slate-600 leading-relaxed">
+          <li>음용과 에너지 활용을 <span className="font-semibold text-slate-900">등급으로 나누는 것</span>이 구조의 핵심. 원두를 버리지 않고 전량 활용해야 수익성과 일자리 양쪽이 좋아짐.</li>
+          <li>오일 추출은 “추출 가능성”보다 <span className="font-semibold text-slate-900">추출 후 어디에 쓸 수 있는지</span>가 더 중요. 오일과 부산물의 용도를 같이 설계해야 경제성이 나옴.</li>
+          <li>유통 단축은 한국 수입 주체가 물류·통관을 직접 가져가고, 현지 가공 능력이 있어야 실제 일자리로 이어짐.</li>
+        </ul>
+      ),
+    },
+  ];
+
   return (
     <main className="min-h-screen bg-white">
       {/* ==================== 0️⃣ Header ==================== */}
@@ -116,7 +189,6 @@ export default function Home() {
         <nav className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
           {/* 로고 영역 */}
           <div className="flex items-center gap-4">
-            {/* 브랜드 로고 */}
             <Link
               href="/"
               className="flex flex-col leading-tight"
@@ -133,7 +205,6 @@ export default function Home() {
               </span>
             </Link>
 
-            {/* 전남대 로고 */}
             <div className="h-8 w-[1px] bg-slate-200 mx-1 hidden sm:block" />
             <a
               href="https://www.jnu.ac.kr"
@@ -165,6 +236,10 @@ export default function Home() {
             <Link href="#product" className="hover:text-green-600 transition-colors">
               주요 제품
             </Link>
+            <Link href="#uganda" className="hover:text-green-600 transition-colors">
+              우간다 기획
+            </Link>
+
             <Link
               href="#contact"
               className="bg-green-600 text-white px-6 py-2.5 rounded-full hover:bg-green-500 transition-all shadow-md"
@@ -223,6 +298,9 @@ export default function Home() {
             </Link>
             <Link href="#product" className="text-xl font-bold text-slate-200 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>
               주요 제품
+            </Link>
+            <Link href="#uganda" className="text-xl font-bold text-slate-200 border-b border-white/10 pb-4" onClick={() => setIsMenuOpen(false)}>
+              우간다 기획
             </Link>
             <Link href="#contact" className="text-2xl font-bold text-green-400 pt-4" onClick={() => setIsMenuOpen(false)}>
               문의하기
@@ -326,7 +404,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ==================== 4️⃣ Product (교체됨) ==================== */}
+      {/* ==================== 4️⃣ Product ==================== */}
       <section id="product" className="py-24 bg-slate-50 scroll-mt-20">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-14">
@@ -410,6 +488,43 @@ export default function Home() {
           </button>
         </div>
       )}
+
+      {/* ==================== 4.5️⃣ Uganda Coffee Initiative ==================== */}
+      <section
+        id="uganda"
+        className="py-24 bg-slate-50 scroll-mt-20"
+      >
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight">Uganda Coffee Initiative</h2>
+            <h3 className="text-4xl font-extrabold text-slate-900 mb-4">
+              우간다 커피 × 청년 일자리 × 바이오에너지 연계 기획
+            </h3>
+            <p className="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+              전남대 바이오에너지연구소와 우간다 청년 리더가 함께 검토하는 파일럿형 사업입니다.
+              좋은 커피는 음용으로, 음용으로 쓰기 어려운 원두는 오일 추출 후 에너지·산업 소재로 활용해
+              현지 일자리와 유통 단축, 전량 활용을 동시에 고려합니다.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {ugandaCards.map((card) => (
+              <div
+                key={card.title}
+                className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all"
+              >
+                <h4 className="text-xl font-bold text-slate-900 mb-4 text-green-700">{card.title}</h4>
+                {card.body}
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-14 text-center text-sm text-slate-500 border-t border-slate-200 pt-10">
+            상기 내용은 협력 방향 검토를 위한 기획 초안입니다. 실제 물량·단가·가공비·통관 조건은
+            우간다 현지 확보 조건과 한국 수입·판매 채널에 따라 달라질 수 있습니다.
+          </div>
+        </div>
+      </section>
 
       {/* ==================== 5️⃣ Inquiry ==================== */}
       <section id="contact" className="py-24 bg-white scroll-mt-20">

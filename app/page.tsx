@@ -182,6 +182,42 @@ export default function Home() {
     },
   ];
 
+const ugandaTableRows = [
+  {
+    region: "부소가(Busoga) / 동부",
+    note: "로부스타 중심, 소규모 농가·협동조합 다수",
+    gradeA: { share: "약 30%", use: "음용 원두 후보", note: "로스팅·음용 커피 적합도 검토" },
+    gradeB: { share: "약 40%", use: "저등급 원두", note: "오일 추출·에너지·산업 소재 후보" },
+    gradeC: { share: "약 30%", use: "불량/음용 부적합", note: "오일 추출 대상, 전량 활용 검토" },
+  },
+  {
+    region: "키게지/키소로 등(Kigezi) / 남서부",
+    note: "고지대 아라비카 계열, 산지에 따라 품질 편차 큼",
+    gradeA: { share: "약 40%", use: "음용 원두 후보", note: "고급 아라비카 스토리 활용 가능" },
+    gradeB: { share: "약 35%", use: "저등급 원두", note: "음용 애매 구간, 활용 분리 검토" },
+    gradeC: { share: "약 25%", use: "불량/음용 부적합", note: "오일·에너지 활용 연계 검토" },
+  },
+  {
+    region: "기타 지역(혼합)",
+    note: "수집상·조합 경유 물량, 등급 혼재",
+    gradeA: { share: "약 25%", use: "음용 원두 후보", note: "확보 조건에 따라 변동" },
+    gradeB: { share: "약 45%", use: "저등급 원두", note: "대량 확보 시 활용 비중 커질 수 있음" },
+    gradeC: { share: "약 30%", use: "불량/음용 부적합", note: "추출 대상·부산물 활용 검토" },
+  },
+];
+
+const diagramFlow = [
+  { label: "우간다 수매 원두", color: "bg-slate-900 text-white border-slate-600" },
+  { label: "현지 선별/등급 분리", color: "bg-green-600 text-white border-green-500" },
+  { label: "음용 원두", color: "border-green-500 bg-white" },
+  { label: "저등급 원두", color: "border-amber-500 bg-white" },
+  { label: "오일 추출 대상 원두", color: "border-rose-500 bg-white" },
+  { label: "커피박/부산물", color: "border-slate-500 bg-white" },
+  { label: "한국 로스팅·음용 커피", color: "bg-green-600 text-white border-green-500" },
+  { label: "오일 추출 → 에너지/산업 소재", color: "bg-amber-600 text-white border-amber-500" },
+  { label: "현지 연료·퇴비·바이오매스", color: "bg-slate-800 text-white border-slate-600" },
+];
+
   return (
     <main className="min-h-screen bg-white">
       {/* ==================== 0️⃣ Header ==================== */}
@@ -569,29 +605,7 @@ export default function Home() {
 </div>
 
 
-const ugandaTableRows = [
-  {
-    region: "부소가(Busoga) / 동부",
-    note: "로부스타 중심, 소규모 농가·협동조합 다수",
-    gradeA: { share: "약 30%", use: "음용 원두 후보", note: "로스팅·음용 커피 적합도 검토" },
-    gradeB: { share: "약 40%", use: "저등급 원두", note: "오일 추출·에너지·산업 소재 후보" },
-    gradeC: { share: "약 30%", use: "불량/음용 부적합", note: "오일 추출 대상, 전량 활용 검토" },
-  },
-  {
-    region: "키게지/키소로 등(Kigezi) / 남서부",
-    note: "고지대 아라비카 계열, 산지에 따라 품질 편차 큼",
-    gradeA: { share: "약 40%", use: "음용 원두 후보", note: "고급 아라비카 스토리 활용 가능" },
-    gradeB: { share: "약 35%", use: "저등급 원두", note: "음용 애매 구간, 활용 분리 검토" },
-    gradeC: { share: "약 25%", use: "불량/음용 부적합", note: "오일·에너지 활용 연계 검토" },
-  },
-  {
-    region: "기타 지역(혼합)",
-    note: "수집상·조합 경유 물량, 등급 혼재",
-    gradeA: { share: "약 25%", use: "음용 원두 후보", note: "확보 조건에 따라 변동" },
-    gradeB: { share: "약 45%", use: "저등급 원두", note: "대량 확보 시 활용 비중 커질 수 있음" },
-    gradeC: { share: "약 30%", use: "불량/음용 부적합", note: "추출 대상·부산물 활용 검토" },
-  },
-];
+
 
 
     {/* 원두 흐름 다이어그램 */}
@@ -644,6 +658,9 @@ const ugandaTableRows = [
         위 흐름은 예시 구조입니다. 실제 등급 기준, 선별 방식, 추출 대상 구분은 우간다 현지 조건과 연구소 검토 결과에 따라 정리됩니다.
       </div>
     </div>
+
+
+
 
     {/* 카드 설명 */}
     <div className="grid md:grid-cols-2 gap-8">

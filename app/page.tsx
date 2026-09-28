@@ -490,41 +490,157 @@ export default function Home() {
       )}
 
       {/* ==================== 4.5️⃣ Uganda Coffee Initiative ==================== */}
-      <section
-        id="uganda"
-        className="py-24 bg-slate-50 scroll-mt-20"
-      >
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight">Uganda Coffee Initiative</h2>
-            <h3 className="text-4xl font-extrabold text-slate-900 mb-4">
-              우간다 커피 × 청년 일자리 × 바이오에너지 연계 기획
-            </h3>
-            <p className="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
-              전남대 바이오에너지연구소와 우간다 청년 리더가 함께 검토하는 파일럿형 사업입니다.
-              좋은 커피는 음용으로, 음용으로 쓰기 어려운 원두는 오일 추출 후 에너지·산업 소재로 활용해
-              현지 일자리와 유통 단축, 전량 활용을 동시에 고려합니다.
-            </p>
-          </div>
+<section
+  id="uganda"
+  className="py-24 bg-slate-50 scroll-mt-20"
+>
+  <div className="max-w-5xl mx-auto px-6">
+    <div className="text-center mb-16">
+      <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight">Uganda Coffee Initiative</h2>
+      <h3 className="text-4xl font-extrabold text-slate-900 mb-4">
+        우간다 커피 × 청년 일자리 × 바이오에너지 연계 기획
+      </h3>
+      <p className="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+        전남대 바이오에너지연구소와 우간다 청년 리더가 함께 검토하는 파일럿형 사업입니다.
+        좋은 커피는 음용으로, 음용으로 쓰기 어려운 원두는 오일 추출 후 에너지·산업 소재로 활용해
+        현지 일자리와 유통 단축, 전량 활용을 동시에 고려합니다.
+      </p>
+    </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {ugandaCards.map((card) => (
-              <div
-                key={card.title}
-                className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all"
-              >
-                <h4 className="text-xl font-bold text-slate-900 mb-4 text-green-700">{card.title}</h4>
-                {card.body}
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-14 text-center text-sm text-slate-500 border-t border-slate-200 pt-10">
-            상기 내용은 협력 방향 검토를 위한 기획 초안입니다. 실제 물량·단가·가공비·통관 조건은
-            우간다 현지 확보 조건과 한국 수입·판매 채널에 따라 달라질 수 있습니다.
+    {/* 연구소 역할 강조 */}
+    <div className="bg-slate-900 rounded-2xl p-6 md:p-8 mb-14 border border-slate-700">
+      <div className="flex items-start gap-5">
+        <div className="shrink-0">
+          <div className="w-12 h-12 rounded-full bg-green-600 flex items-center justify-center text-white text-2xl font-bold">
+            R
           </div>
         </div>
-      </section>
+        <div className="min-w-0">
+          <h4 className="text-lg font-bold text-white mb-2">연구소 역할</h4>
+          <p className="text-slate-300 leading-relaxed text-sm md:text-base">
+            우리는 <strong className="text-green-300">오일 추출 공정 설계</strong>,
+            <strong className="text-green-300">품질·용도 정의</strong>,
+            <strong className="text-green-300">커피박 활용 연구</strong>를 중심으로
+            음용 커피와 에너지·산업 소재가 연결되는 구조를 설계합니다.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    {/* 산지/등급/물량 정리 표 */}
+    <div className="mb-14 overflow-x-auto">
+      <table className="min-w-full border-collapse bg-white border border-slate-200 rounded-xl overflow-hidden">
+        <thead>
+          <tr className="bg-slate-900 text-slate-200">
+            <th className="border border-slate-700 px-5 py-4 text-left font-bold text-sm uppercase tracking-wider">구분</th>
+            <th className="border border-slate-700 px-5 py-4 text-left font-bold text-sm uppercase tracking-wider">예상 특징</th>
+            <th className="border border-slate-700 px-5 py-4 text-left font-bold text-sm uppercase tracking-wider">활용 방향</th>
+            <th className="border border-slate-700 px-5 py-4 text-left font-bold text-sm uppercase tracking-wider">비고</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-slate-200">
+          <tr className="hover:bg-slate-50">
+            <td className="border border-slate-200 px-5 py-4 font-semibold text-slate-900">음용 원두</td>
+            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm leading-relaxed">상위 등급, 로스팅 음용에 적합</td>
+            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm leading-relaxed">한국 로스팅·공급, B2B/B2C 커피</td>
+            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm">품질 일관성·수급 안정성 중요</td>
+          </tr>
+          <tr className="hover:bg-slate-50">
+            <td className="border border-slate-200 px-5 py-4 font-semibold text-slate-900">저등급 원두</td>
+            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm leading-relaxed">음용으로는 품질이 애매한 원두</td>
+            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm leading-relaxed">오일 추출, 에너지·산업 소재 검토</td>
+            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm">현지 가공비·활용처가 핵심</td>
+          </tr>
+          <tr className="hover:bg-slate-50">
+            <td className="border border-slate-200 px-5 py-4 font-semibold text-slate-900">오일 추출 대상</td>
+            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm leading-relaxed">저등급·불량·음용 부적합 원두</td>
+            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm leading-relaxed">오일 추출 후 바이오디젤/난방/보조연료/연구시료 등</td>
+            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm">용도 정의가 경제성 핵심</td>
+          </tr>
+          <tr className="hover:bg-slate-50">
+            <td className="border border-slate-200 px-5 py-4 font-semibold text-slate-900">커피박/부산물</td>
+            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm leading-relaxed">오일 추출 후 잔여물</td>
+            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm leading-relaxed">현지 연료, 퇴비, 추가 바이오매스 활용</td>
+            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm">전량 활용 구조 연결</td>
+          </tr>
+        </tbody>
+      </table>
+      <div className="mt-3 text-xs text-slate-500 text-center">
+        표의 구분은 실제 우간다 현지 등급·물량·확보 조건에 따라 조정될 수 있습니다.
+      </div>
+    </div>
+
+    {/* 원두 흐름 다이어그램 */}
+    <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 mb-14">
+      <h4 className="text-lg font-bold text-slate-900 mb-6 text-green-700">원두 분류 → 활용 흐름</h4>
+
+      <div className="flex flex-wrap items-center gap-4 justify-center md:justify-start">
+        <div className="flex items-center gap-3 bg-slate-900 rounded-xl px-5 py-3 border border-slate-600">
+          <div className="w-3 h-3 rounded-full bg-red-500" />
+          <span className="text-sm font-bold text-white">수매 원두</span>
+        </div>
+
+        <div className="text-slate-400 text-xl font-thin">→</div>
+
+        <div className="flex items-center gap-3 bg-green-600 rounded-xl px-5 py-3 border border-green-500">
+          <div className="w-3 h-3 rounded-full bg-white" />
+          <span className="text-sm font-bold text-white">선별</span>
+        </div>
+
+        <div className="text-slate-400 text-xl font-thin">→</div>
+
+        <div className="flex flex-wrap gap-3">
+          <div className="border-t-2 border-green-500 pl-4">
+            <div className="flex items-center gap-3 bg-slate-100 rounded-xl px-5 py-3 border border-slate-200">
+              <div className="w-3 h-3 rounded-full bg-green-600" />
+              <span className="text-sm font-semibold text-slate-900">음용 원두</span>
+            </div>
+            <div className="text-xs text-slate-500 mt-1 ml-1">로스팅·음용 커피</div>
+          </div>
+
+          <div className="border-t-2 border-amber-500 pl-4">
+            <div className="flex items-center gap-3 bg-slate-100 rounded-xl px-5 py-3 border border-slate-200">
+              <div className="w-3 h-3 rounded-full bg-amber-500" />
+              <span className="text-sm font-semibold text-slate-900">저등급 원두</span>
+            </div>
+            <div className="text-xs text-slate-500 mt-1 ml-1">오일 추출·에너지·산업 소재</div>
+          </div>
+
+          <div className="border-t-2 border-amber-500 pl-4">
+            <div className="flex items-center gap-3 bg-slate-100 rounded-xl px-5 py-3 border border-slate-200">
+              <div className="w-3 h-3 rounded-full bg-amber-500" />
+              <span className="text-sm font-semibold text-slate-900">커피박/부산물</span>
+            </div>
+            <div className="text-xs text-slate-500 mt-1 ml-1">연료·퇴비·바이오매스</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-6 text-xs text-slate-500 text-center">
+        위 흐름은 예시 구조입니다. 실제 등급 기준, 선별 방식, 추출 대상 구분은 우간다 현지 조건과 연구소 검토 결과에 따라 정리됩니다.
+      </div>
+    </div>
+
+    {/* 카드 설명 */}
+    <div className="grid md:grid-cols-2 gap-8">
+      {ugandaCards.map((card) => (
+        <div
+          key={card.title}
+          className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all"
+        >
+          <h4 className="text-xl font-bold text-slate-900 mb-4 text-green-700">{card.title}</h4>
+          {card.body}
+        </div>
+      ))}
+    </div>
+
+    <div className="mt-14 text-center text-sm text-slate-500 border-t border-slate-200 pt-10">
+      상기 내용은 협력 방향 검토를 위한 기획 초안입니다. 실제 물량·단가·가공비·통관 조건은
+      우간다 현지 확보 조건과 한국 수입·판매 채널에 따라 달라질 수 있습니다.
+    </div>
+  </div>
+</section>
+
 
       {/* ==================== 5️⃣ Inquiry ==================== */}
       <section id="contact" className="py-24 bg-white scroll-mt-20">

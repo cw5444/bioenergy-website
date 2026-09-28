@@ -529,46 +529,70 @@ export default function Home() {
 
     {/* 산지/등급/물량 정리 표 */}
     <div className="mb-14 overflow-x-auto">
-      <table className="min-w-full border-collapse bg-white border border-slate-200 rounded-xl overflow-hidden">
-        <thead>
-          <tr className="bg-slate-900 text-slate-200">
-            <th className="border border-slate-700 px-5 py-4 text-left font-bold text-sm uppercase tracking-wider">구분</th>
-            <th className="border border-slate-700 px-5 py-4 text-left font-bold text-sm uppercase tracking-wider">예상 특징</th>
-            <th className="border border-slate-700 px-5 py-4 text-left font-bold text-sm uppercase tracking-wider">활용 방향</th>
-            <th className="border border-slate-700 px-5 py-4 text-left font-bold text-sm uppercase tracking-wider">비고</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-slate-200">
-          <tr className="hover:bg-slate-50">
-            <td className="border border-slate-200 px-5 py-4 font-semibold text-slate-900">음용 원두</td>
-            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm leading-relaxed">상위 등급, 로스팅 음용에 적합</td>
-            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm leading-relaxed">한국 로스팅·공급, B2B/B2C 커피</td>
-            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm">품질 일관성·수급 안정성 중요</td>
-          </tr>
-          <tr className="hover:bg-slate-50">
-            <td className="border border-slate-200 px-5 py-4 font-semibold text-slate-900">저등급 원두</td>
-            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm leading-relaxed">음용으로는 품질이 애매한 원두</td>
-            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm leading-relaxed">오일 추출, 에너지·산업 소재 검토</td>
-            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm">현지 가공비·활용처가 핵심</td>
-          </tr>
-          <tr className="hover:bg-slate-50">
-            <td className="border border-slate-200 px-5 py-4 font-semibold text-slate-900">오일 추출 대상</td>
-            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm leading-relaxed">저등급·불량·음용 부적합 원두</td>
-            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm leading-relaxed">오일 추출 후 바이오디젤/난방/보조연료/연구시료 등</td>
-            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm">용도 정의가 경제성 핵심</td>
-          </tr>
-          <tr className="hover:bg-slate-50">
-            <td className="border border-slate-200 px-5 py-4 font-semibold text-slate-900">커피박/부산물</td>
-            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm leading-relaxed">오일 추출 후 잔여물</td>
-            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm leading-relaxed">현지 연료, 퇴비, 추가 바이오매스 활용</td>
-            <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm">전량 활용 구조 연결</td>
-          </tr>
-        </tbody>
-      </table>
-      <div className="mt-3 text-xs text-slate-500 text-center">
-        표의 구분은 실제 우간다 현지 등급·물량·확보 조건에 따라 조정될 수 있습니다.
-      </div>
-    </div>
+  <table className="min-w-full border-collapse bg-white border border-slate-200 rounded-xl overflow-hidden">
+    <thead>
+      <tr className="bg-slate-900 text-slate-200">
+        <th className="border border-slate-700 px-5 py-4 text-left font-bold text-sm uppercase tracking-wider">산지(추정)</th>
+        <th className="border border-slate-700 px-5 py-4 text-left font-bold text-sm uppercase tracking-wider">특징</th>
+        <th className="border border-slate-700 px-5 py-4 text-left font-bold text-sm uppercase tracking-wider">음용 원두 후보</th>
+        <th className="border border-slate-700 px-5 py-4 text-left font-bold text-sm uppercase tracking-wider">저등급 원두</th>
+        <th className="border border-slate-700 px-5 py-4 text-left font-bold text-sm uppercase tracking-wider">오일 추출 대상</th>
+      </tr>
+    </thead>
+    <tbody className="divide-y divide-slate-200">
+      {ugandaTableRows.map((row, idx) => (
+        <tr key={idx} className="hover:bg-slate-50">
+          <td className="border border-slate-200 px-5 py-4 font-semibold text-slate-900">{row.region}</td>
+          <td className="border border-slate-200 px-5 py-4 text-slate-600 text-sm leading-relaxed">{row.note}</td>
+          <td className="border border-slate-200 px-5 py-4">
+            <span className="text-sm font-semibold text-green-700">{row.gradeA.share}</span>
+            <div className="text-xs text-slate-500 mt-1 leading-relaxed">{row.gradeA.use}</div>
+            <div className="text-xs text-slate-400 mt-0.5">{row.gradeA.note}</div>
+          </td>
+          <td className="border border-slate-200 px-5 py-4">
+            <span className="text-sm font-semibold text-amber-700">{row.gradeB.share}</span>
+            <div className="text-xs text-slate-500 mt-1 leading-relaxed">{row.gradeB.use}</div>
+            <div className="text-xs text-slate-400 mt-0.5">{row.gradeB.note}</div>
+          </td>
+          <td className="border border-slate-200 px-5 py-4">
+            <span className="text-sm font-semibold text-rose-700">{row.gradeC.share}</span>
+            <div className="text-xs text-slate-500 mt-1 leading-relaxed">{row.gradeC.use}</div>
+            <div className="text-xs text-slate-400 mt-0.5">{row.gradeC.note}</div>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <div className="mt-3 text-xs text-slate-500 text-center">
+    위 비율은 실제 확보 기준이 아니라 검토를 위한 가안입니다. 실제 산지·등급·물량이 확인되면 수치를 다시 맞춥니다.
+  </div>
+</div>
+
+
+const ugandaTableRows = [
+  {
+    region: "부소가(Busoga) / 동부",
+    note: "로부스타 중심, 소규모 농가·협동조합 다수",
+    gradeA: { share: "약 30%", use: "음용 원두 후보", note: "로스팅·음용 커피 적합도 검토" },
+    gradeB: { share: "약 40%", use: "저등급 원두", note: "오일 추출·에너지·산업 소재 후보" },
+    gradeC: { share: "약 30%", use: "불량/음용 부적합", note: "오일 추출 대상, 전량 활용 검토" },
+  },
+  {
+    region: "키게지/키소로 등(Kigezi) / 남서부",
+    note: "고지대 아라비카 계열, 산지에 따라 품질 편차 큼",
+    gradeA: { share: "약 40%", use: "음용 원두 후보", note: "고급 아라비카 스토리 활용 가능" },
+    gradeB: { share: "약 35%", use: "저등급 원두", note: "음용 애매 구간, 활용 분리 검토" },
+    gradeC: { share: "약 25%", use: "불량/음용 부적합", note: "오일·에너지 활용 연계 검토" },
+  },
+  {
+    region: "기타 지역(혼합)",
+    note: "수집상·조합 경유 물량, 등급 혼재",
+    gradeA: { share: "약 25%", use: "음용 원두 후보", note: "확보 조건에 따라 변동" },
+    gradeB: { share: "약 45%", use: "저등급 원두", note: "대량 확보 시 활용 비중 커질 수 있음" },
+    gradeC: { share: "약 30%", use: "불량/음용 부적합", note: "추출 대상·부산물 활용 검토" },
+  },
+];
+
 
     {/* 원두 흐름 다이어그램 */}
     <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 mb-14">

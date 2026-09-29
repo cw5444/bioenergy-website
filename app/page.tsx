@@ -103,117 +103,113 @@ export default function Home() {
 
   /* ===== 우간다 커피 기획 섹션: JSX 밖 선언 ===== */
   const ugandaCards = [
-    {
-  title: "왜 우간다 커피인가",
-  body: (
-    <ul className="space-y-3 text-sm text-slate-600 leading-relaxed">
-      <li>
-        <span className="font-semibold text-slate-900">생산 잠재력</span>
-        우간다는 로부스타 중심 생산국이어서 등급별 물량 편차가 뚜렷한 편입니다.
-        이런 구조를 활용하면 음용과 저등급 원두를 나눠서 쓰기 좋습니다.
-      </li>
-      <li>
-        <span className="font-semibold text-slate-900">현지 파트너</span>
-        청년 일자리 창출을 목표로 하는 우간다 청년 리더와 함께 검토할 수 있습니다.
-      </li>
-      <li>
-        <span className="font-semibold text-slate-900">가격 환경</span>
-        지금 글로벌 커피가격은 고점 대비 내려온 구간이라, 저등급 원두를 중심으로
-        현지 가공·활용 실험을 시도하기엔 부담이 덜한 국면입니다.
-      </li>
-    </ul>
-  ),
-},
+  {
+    title: "왜 우간다 커피인가",
+    body: (
+      <ul className="space-y-3 text-sm text-slate-600 leading-relaxed">
+        <li>
+          <span className="font-semibold text-slate-900">생산 잠재력</span>
+          <br />우간다는 로부스타 중심 생산국이어서 등급별 물량 편차가 뚜렷한 편입니다.
+          이런 구조를 활용하면 음용과 저등급 원두를 나눠서 쓰기 좋습니다.
+        </li>
+        <li>
+          <span className="font-semibold text-slate-900">현지 파트너</span>
+          <br />청년 일자리 창출을 목표로 하는 우간다 청년 리더와 함께 검토할 수 있습니다.
+        </li>
+        <li>
+          <span className="font-semibold text-slate-900">가격 환경</span>
+          <br />지금 글로벌 커피가격은 고점 대비 내려온 구간이라, 저등급 원두를 중심으로
+          현지 가공·활용 실험을 시도하기엔 부담이 덜한 국면입니다.
+        </li>
+      </ul>
+    ),
+  },
+  {
+    title: "3가지 목표",
+    body: (
+      <ul className="space-y-4 text-sm text-slate-600 leading-relaxed">
+        <li>
+          <span className="font-semibold text-slate-900">1차: 우간다 청년 일자리</span>
+          <br />수매, 선별, 1차 가공, 포장, 오일 추출 보조 같은 단계에 현지 인력을 배치해
+          고용을 만들어 가는 방향입니다.
+        </li>
+        <li>
+          <span className="font-semibold text-slate-900">2차: 유통 단축</span>
+          <br />중간 유통 단계를 줄여 우간다에서 한국으로 직공급 구조를 만듭니다.
+          마진이 여러 단계로 분산되는 구조보다 현지와 한국이 직접 연결되는 방식에 가깝습니다.
+        </li>
+        <li>
+          <span className="font-semibold text-slate-900">3차: 원두 전량 활용</span>
+          <br />음용에 적합한 원두는 로스팅·음용 커피로, 음용으로 쓰기 어려운 저등급 원두나
+          부산물은 오일 추출 후 에너지·산업 소재로 활용하는 구조를 검토합니다.
+        </li>
+      </ul>
+    ),
+  },
+  {
+    title: "제품·활용 구조",
+    body: (
+      <ul className="space-y-4 text-sm text-slate-600 leading-relaxed">
+        <li>
+          <span className="font-semibold text-slate-900">음용 커피 라인</span>
+          <br />상위 등급 원두는 한국에서 로스팅해 공급합니다.
+          카페 B2B 납품, 온라인 D2C, 브랜딩 스토리와 연결할 수 있습니다.
+        </li>
+        <li>
+          <span className="font-semibold text-slate-900">오일·에너지 활용 라인</span>
+          <br />저등급이나 불량 원두는 오일을 추출한 뒤 바이오디젤, 난방·보조연료,
+          연구용 시료, 산업 보조재 같은 활용처를 함께 설계합니다.
+        </li>
+        <li>
+          <span className="font-semibold text-slate-900">커피박/부산물 활용</span>
+          <br />오일 추출 후 남은 잔여물은 현지 연료, 퇴비, 추가 바이오매스 활용 등으로
+          연결해서 “버리는 원두”를 줄이는 방향입니다.
+        </li>
+      </ul>
+    ),
+  },
+  {
+    title: "현실적 접근: 파일럿 → 확대",
+    body: (
+      <ol className="space-y-3 text-sm text-slate-600 leading-relaxed">
+        <li>
+          <span className="font-semibold text-slate-900">1단계</span>
+          <br />소량 생두나 원두를 직수입하고, 한국에서 로스팅해 소규모로 판매하면서
+          소비자 반응을 확인합니다. 동시에 우간다에서 오일 추출 가능성과 품질 샘플도 확보합니다.
+        </li>
+        <li>
+          <span className="font-semibold text-slate-900">2단계</span>
+          <br />반응이 확인되면 현지 가공과 선별 역량을 키우고, 청년 고용도 함께 확대합니다.
+        </li>
+        <li>
+          <span className="font-semibold text-slate-900">3단계</span>
+          <br />오일 추출 라인이나 커피박 활용 방안을 연구소 기술과 연결해서 확장합니다.
+        </li>
+      </ol>
+    ),
+  },
+  {
+    title: "핵심 포인트",
+    body: (
+      <ul className="space-y-3 text-sm text-slate-600 leading-relaxed">
+        <li>
+          음용과 에너지 활용을 <span className="font-semibold text-slate-900">등급으로 나누는 것</span>이
+          구조의 핵심입니다. 원두를 버리지 않고 전량 활용해야 수익성과 일자리 양쪽이 좋아집니다.
+        </li>
+        <li>
+          오일 추출은 “추출이 가능하냐”보다
+          <span className="font-semibold text-slate-900">추출한 뒤 어디에 쓸 수 있느냐</span>가 더 중요합니다.
+          오일과 부산물의 용도를 같이 설계해야 경제성이 나옵니다.
+        </li>
+        <li>
+          유통 단축은 한국 수입 주체가 물류와 통관을 직접 가져가고,
+          현지 가공 능력도 있어야 실제 일자리로 이어집니다.
+        </li>
+      </ul>
+    ),
+  },
+];
 
-    {
-  title: "3가지 목표",
-  body: (
-    <ul className="space-y-4 text-sm text-slate-600 leading-relaxed">
-      <li>
-        <span className="font-semibold text-slate-900">1차: 우간다 청년 일자리</span>
-        수매, 선별, 1차 가공, 포장, 오일 추출 보조 같은 단계에 현지 인력을 배치해
-        고용을 만들어 가는 방향입니다.
-      </li>
-      <li>
-        <span className="font-semibold text-slate-900">2차: 유통 단축</span>
-        중간 유통 단계를 줄여 우간다에서 한국으로 직공급 구조를 만듭니다.
-        마진이 여러 단계로 분산되는 구조보다 현지와 한국이 직접 연결되는 방식에 가깝습니다.
-      </li>
-      <li>
-        <span className="font-semibold text-slate-900">3차: 원두 전량 활용</span>
-        음용에 적합한 원두는 로스팅·음용 커피로, 음용으로 쓰기 어려운 저등급 원두나
-        부산물은 오일 추출 후 에너지·산업 소재로 활용하는 구조를 검토합니다.
-      </li>
-    </ul>
-  ),
-},
-
-    {
-  title: "제품·활용 구조",
-  body: (
-    <ul className="space-y-4 text-sm text-slate-600 leading-relaxed">
-      <li>
-        <span className="font-semibold text-slate-900">음용 커피 라인</span>
-        상위 등급 원두는 한국에서 로스팅해 공급합니다.
-        카페 B2B 납품, 온라인 D2C, 브랜딩 스토리와 연결할 수 있습니다.
-      </li>
-      <li>
-        <span className="font-semibold text-slate-900">오일·에너지 활용 라인</span>
-        저등급이나 불량 원두는 오일을 추출한 뒤 바이오디젤, 난방·보조연료,
-        연구용 시료, 산업 보조재 같은 활용처를 함께 설계합니다.
-      </li>
-      <li>
-        <span className="font-semibold text-slate-900">커피박/부산물 활용</span>
-        오일 추출 후 남은 잔여물은 현지 연료, 퇴비, 추가 바이오매스 활용 등으로
-        연결해서 “버리는 원두”를 줄이는 방향입니다.
-      </li>
-    </ul>
-  ),
-},
-
-    {
-  title: "현실적 접근: 파일럿 → 확대",
-  body: (
-    <ol className="space-y-3 text-sm text-slate-600 leading-relaxed">
-      <li>
-        <span className="font-semibold text-slate-900">1단계</span>
-        소량 생두나 원두를 직수입하고, 한국에서 로스팅해 소규모로 판매하면서
-        소비자 반응을 확인합니다. 동시에 우간다에서 오일 추출 가능성과 품질 샘플도 확보합니다.
-      </li>
-      <li>
-        <span className="font-semibold text-slate-900">2단계</span>
-        반응이 확인되면 현지 가공과 선별 역량을 키우고, 청년 고용도 함께 확대합니다.
-      </li>
-      <li>
-        <span className="font-semibold text-slate-900">3단계</span>
-        오일 추출 라인이나 커피박 활용 방안을 연구소 기술과 연결해서 확장합니다.
-      </li>
-    </ol>
-  ),
-},
-
-    {
-  title: "핵심 포인트",
-  body: (
-    <ul className="space-y-3 text-sm text-slate-600 leading-relaxed">
-      <li>
-        음용과 에너지 활용을 <span className="font-semibold text-slate-900">등급으로 나누는 것</span>이
-        구조의 핵심입니다. 원두를 버리지 않고 전량 활용해야 수익성과 일자리 양쪽이 좋아집니다.
-      </li>
-      <li>
-        오일 추출은 “추출이 가능하냐”보다
-        <span className="font-semibold text-slate-900">추출한 뒤 어디에 쓸 수 있느냐</span>가 더 중요합니다.
-        오일과 부산물의 용도를 같이 설계해야 경제성이 나옵니다.
-      </li>
-      <li>
-        유통 단축은 한국 수입 주체가 물류와 통관을 직접 가져가고,
-        현지 가공 능력도 있어야 실제 일자리로 이어집니다.
-      </li>
-    </ul>
-  ),
-},
-
-  ];
 
 const ugandaTableRows = [
   {

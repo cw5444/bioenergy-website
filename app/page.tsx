@@ -610,10 +610,10 @@ const diagramFlow = [
 
     {/* 원두 흐름 다이어그램 */}
     <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 mb-14">
-  <h4 className="text-lg font-bold text-slate-900 mb-6 text-green-700">원두 분류 → 활용 흐름</h4>
+  <h4 className="text-lg font-bold text-slate-900 mb-6 text-green-700">원두 분류 활용 흐름</h4>
 
-  {/* 왼쪽 흐름 */}
-  <div className="flex items-center gap-4 mb-10">
+  {/* 전체 흐름: 한 줄처럼 보이게 */}
+  <div className="flex items-center justify-center md:justify-start gap-4 flex-wrap">
     <div className="bg-slate-900 rounded-xl px-5 py-3 border border-slate-600 flex items-center gap-3">
       <div className="w-3 h-3 rounded-full bg-red-500" />
       <span className="text-sm font-bold text-white">수매 원두</span>
@@ -625,39 +625,39 @@ const diagramFlow = [
       <div className="w-3 h-3 rounded-full bg-white" />
       <span className="text-sm font-bold text-white">선별</span>
     </div>
+
+    <span className="text-slate-400 text-xl font-thin">→</span>
+
+    <div className="flex flex-wrap gap-4 ml-2">
+      <div className="border-2 border-green-500 rounded-lg bg-slate-50 px-4 py-2 flex items-center gap-2">
+        <div className="w-2.5 h-2.5 rounded-full bg-green-600" />
+        <span className="text-sm font-semibold text-slate-900">음용 원두</span>
+      </div>
+
+      <div className="border-2 border-amber-500 rounded-lg bg-slate-50 px-4 py-2 flex items-center gap-2">
+        <div className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+        <span className="text-sm font-semibold text-slate-900">저등급 원두</span>
+      </div>
+
+      <div className="border-2 border-slate-400 rounded-lg bg-slate-50 px-4 py-2 flex items-center gap-2">
+        <div className="w-2.5 h-2.5 rounded-full bg-slate-600" />
+        <span className="text-sm font-semibold text-slate-900">커피박/부산물</span>
+      </div>
+    </div>
   </div>
 
-  {/* 오른쪽 카드 정렬 */}
-  <div className="grid gap-5 w-full">
-    <div className="flex items-start gap-4 border border-slate-200 rounded-xl bg-slate-50 p-4">
-      <div className="w-3 h-3 rounded-full bg-green-600 shrink-0 mt-1" />
-      <div className="min-w-0 flex-1">
-        <span className="text-sm font-semibold text-slate-900">음용 원두</span>
-        <div className="text-xs text-slate-500 leading-relaxed">로스팅·음용 커피</div>
-      </div>
-    </div>
-
-    <div className="flex items-start gap-4 border border-slate-200 rounded-xl bg-slate-50 p-4">
-      <div className="w-3 h-3 rounded-full bg-amber-500 shrink-0 mt-1" />
-      <div className="min-w-0 flex-1">
-        <span className="text-sm font-semibold text-slate-900">저등급 원두</span>
-        <div className="text-xs text-slate-500 leading-relaxed">오일 추출·에너지·산업 소재</div>
-      </div>
-    </div>
-
-    <div className="flex items-start gap-4 border border-slate-200 rounded-xl bg-slate-50 p-4">
-      <div className="w-3 h-3 rounded-full bg-slate-600 shrink-0 mt-1" />
-      <div className="min-w-0 flex-1">
-        <span className="text-sm font-semibold text-slate-900">커피박/부산물</span>
-        <div className="text-xs text-slate-500 leading-relaxed">연료·퇴비·바이오매스</div>
-      </div>
-    </div>
+  {/* 용도 설명은 아래에 짧게 */}
+  <div className="mt-6 text-xs text-slate-500 flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-2">
+    <span>음용 원두: 로스팅·음용 커피</span>
+    <span>저등급 원두: 오일 추출·에너지·산업 소재</span>
+    <span>커피박/부산물: 연료·퇴비·바이오매스</span>
   </div>
 
   <div className="mt-6 text-xs text-slate-500 text-center">
     위 흐름은 예시 구조입니다. 실제 등급 기준, 선별 방식, 추출 대상 구분은 우간다 현지 조건과 연구소 검토 결과에 따라 정리됩니다.
   </div>
 </div>
+
 
 
 

@@ -644,13 +644,14 @@ const diagramFlow = [
             <div className="text-xs text-slate-500 mt-1 ml-1">오일 추출·에너지·산업 소재</div>
           </div>
 
-          <div className="border-t-2 border-amber-500 pl-4">
-            <div className="flex items-center gap-3 bg-slate-100 rounded-xl px-5 py-3 border border-slate-200">
-              <div className="w-3 h-3 rounded-full bg-amber-500" />
-              <span className="text-sm font-semibold text-slate-900">커피박/부산물</span>
-            </div>
-            <div className="text-xs text-slate-500 mt-1 ml-1">연료·퇴비·바이오매스</div>
-          </div>
+          <div className="border-t-2 border-slate-500 pl-4">
+  <div className="flex items-center gap-3 bg-slate-100 rounded-xl px-5 py-3 border border-slate-200">
+    <div className="w-3 h-3 rounded-full bg-slate-600" />
+    <span className="text-sm font-semibold text-slate-900">커피박/부산물</span>
+  </div>
+  <div className="text-xs text-slate-500 mt-1 ml-1">연료·퇴비·바이오매스</div>
+</div>
+
         </div>
       </div>
 

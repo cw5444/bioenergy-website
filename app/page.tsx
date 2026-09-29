@@ -536,7 +536,7 @@ export default function Home() {
             <div className="flex items-start gap-5">
               <div className="shrink-0">
                 <Image
-                  src="/images/coffee-bean.jpg"
+                  src="/images/coffee-bean.png"
                   alt="커피 원두"
                   width={56}
                   height={56}

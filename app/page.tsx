@@ -110,7 +110,7 @@ export default function Home() {
           </li>
           <li>
             <span className="font-semibold text-slate-900">현지 파트너</span>
-            <br />청년 일자리 창출을 목표로 하는 우간다 청년 리더와 함께 검토할 수 있습니다.
+            <br />지역 수익 창출을 목표로 하는 우간다 청년 리더와 함께 검토할 수 있습니다.
           </li>
           <li>
             <span className="font-semibold text-slate-900">가격 환경</span>
@@ -125,7 +125,7 @@ export default function Home() {
       body: (
         <ul className="space-y-4 text-sm text-slate-600 leading-relaxed">
           <li>
-            <span className="font-semibold text-slate-900">1차: 우간다 청년 일자리</span>
+            <span className="font-semibold text-slate-900">1차: 우간다 지역경제</span>
             <br />수매, 선별, 1차 가공, 포장, 오일 추출 보조 같은 단계에 현지 인력을 배치해서
             고용을 만들어 가는 방향입니다.
           </li>
@@ -523,7 +523,7 @@ export default function Home() {
           <div className="text-center mb-16">
             <h2 className="text-green-700 font-bold mb-2 uppercase tracking-tight">(기획) 프로젝트</h2>
             <h3 className="text-4xl font-extrabold text-slate-900 mb-4">
-              우간다 커피 × 청년 일자리 × 바이오에너지 연계 기획
+              우간다 커피 × 바이오에너지 연계 기획
             </h3>
             <p className="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
               전남대 바이오에너지연구소와 우간다 청년 리더가 함께 검토하는 파일럿형 사업입니다.
